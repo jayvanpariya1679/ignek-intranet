@@ -11,7 +11,6 @@
 <%@ page import="com.liferay.portal.kernel.util.PortalUtil;"%>
 <link href='https://fonts.googleapis.com/css?family=Poppins'
 	rel='stylesheet'>
-<link rel="stylesheet" href="main.scss">
 <div class="horizontal-containers">
 	<div class="header-body">
 		<div class="employees">

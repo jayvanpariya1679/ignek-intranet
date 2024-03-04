@@ -7,7 +7,6 @@
 	var="configurationActionURL" />
 <liferay-portlet:renderURL portletConfiguration="<%=true%>"
 	var="configurationRenderURL" />
-<link rel="stylesheet" href="main.scss">
 <div class="config">
 	<aui:form action="<%=configurationActionURL%>" method="post" name="fm">
 		<aui:input name="<%=Constants.CMD%>" type="hidden"

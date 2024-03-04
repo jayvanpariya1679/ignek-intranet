@@ -1,4 +1,0 @@
-Bundle-Name: Count-Of
-Bundle-SymbolicName: Count.Of
-Bundle-Version: 1.0.0
-Export-Package: Count.Of.constants

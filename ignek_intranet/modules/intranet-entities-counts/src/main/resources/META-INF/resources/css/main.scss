@@ -1,0 +1,46 @@
+:root {
+  --black-1: #6C6C6C;
+  --white-1: #F0F1F1;
+}
+.header-body {
+	margin-right: 2.5rem;
+	width: 15.938rem;
+	height: 6.25rem;
+	border-radius: 0.5rem;
+	background-color: var(--white-1);
+}
+
+.employees {
+	margin-left: 1.25rem;
+	margin-top: 0.625rem;
+}
+
+.letters {
+	margin-top: 0.313rem;
+	margin-left: 1.25rem;
+	font-family: Poppins;
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 21px;
+	letter-spacing: 0em;
+	color: var(--black-1);
+}
+
+.numbers {
+	margin-left: 11.188rem;
+	font-family: Poppins;
+	font-size: 30px;
+	font-weight: 900;
+	line-height: 45px;
+	letter-spacing: 0em;
+	text-align: left;
+}
+
+.horizontal-containers {
+	display: flex;
+}
+
+.config {
+	margin-left: 6.25rem;
+	margin-right: 6.25rem;
+}

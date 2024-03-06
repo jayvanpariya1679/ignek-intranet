@@ -49,25 +49,24 @@
 		</div>
 		<div class="numbers">
 			<%
-				int number = 0;
-				switch (card) {
-					case "Employees":
-						out.print(UserLocalServiceUtil.getRoleUsersCount(
-						RoleLocalServiceUtil.getRole(PortalUtil.getDefaultCompanyId(), "Employee Role").getRoleId()));
-						break;
-					case "Technologies":
-						out.print(AssetCategoryLocalServiceUtil.getAssetCategoriesCount());
-						break;
-					case "Images":
-						out.print(DLFileEntryLocalServiceUtil.getDLFileEntriesCount());
-						break;
-					case "Users":
-						out.print(UserLocalServiceUtil.getUsersCount());
-						break;
-					default:
-						out.print(0);
-						break;
-				}
+			switch (card) {
+				case "Employees":
+					out.print(UserLocalServiceUtil.getRoleUsersCount(
+					RoleLocalServiceUtil.getRole(PortalUtil.getDefaultCompanyId(), "Employee Role").getRoleId()));
+					break;
+				case "Technologies":
+					out.print(AssetCategoryLocalServiceUtil.getAssetCategoriesCount());
+					break;
+				case "Images":
+					out.print(DLFileEntryLocalServiceUtil.getDLFileEntriesCount());
+					break;
+				case "Users":
+					out.print(UserLocalServiceUtil.getUsersCount());
+					break;
+				default:
+					out.print(0);
+					break;
+			}
 			%>
 		</div>
 	</div>

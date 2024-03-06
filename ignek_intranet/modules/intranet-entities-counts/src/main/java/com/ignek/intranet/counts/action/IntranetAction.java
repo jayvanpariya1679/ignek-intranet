@@ -23,7 +23,7 @@ import aQute.bnd.annotation.metatype.Configurable;
 	immediate = true,
 	configurationPid = IntranetConstant.CONFIGURATION_ID,
 	configurationPolicy = ConfigurationPolicy.OPTIONAL,
-	property = "javax.portlet.name="+ IntranetConstant.PORLET_ID,
+	property = "javax.portlet.name="+ IntranetConstant.PORTLET_ID,
 	service = ConfigurationAction.class
 )
 public class IntranetAction extends DefaultConfigurationAction {

@@ -1,9 +1,13 @@
+:root {
+  --black-1: #6C6C6C;
+  --white-1: #F0F1F1;
+}
 .header-body {
 	margin-right: 2.5rem;
 	width: 15.938rem;
 	height: 6.25rem;
 	border-radius: 0.5rem;
-	background-color: #F0F1F1;
+	background-color: var(--white-1);
 }
 
 .employees {
@@ -19,7 +23,7 @@
 	font-weight: 500;
 	line-height: 21px;
 	letter-spacing: 0em;
-	color: #6C6C6C;
+	color: var(--black-1);
 }
 
 .numbers {

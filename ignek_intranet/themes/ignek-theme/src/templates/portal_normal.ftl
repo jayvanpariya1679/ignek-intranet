@@ -41,9 +41,7 @@
       </#if>
 
       <div class="user-info">
-
-        <#assign userLocalService=serviceLocator.findService("com.liferay.portal.kernel.service.UserLocalService")>
-          <#assign img_path=userLocalService.getUser(user_id).getPortraitURL(theme_display)>
+          <#assign img_path = userService.getPortraitURL(theme_display)>
             <div class="user-image">
               <img class="rounded-pill" src="${img_path}" alt="Not Found">
             </div>

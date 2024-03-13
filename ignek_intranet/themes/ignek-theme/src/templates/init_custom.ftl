@@ -1,0 +1,1 @@
+<#assign user = themeDisplay.getUser() />

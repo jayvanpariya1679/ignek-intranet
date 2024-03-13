@@ -1,1 +1,1 @@
-<#assign userService = themeDisplay.getUser() />
+<#assign user = themeDisplay.getUser() />

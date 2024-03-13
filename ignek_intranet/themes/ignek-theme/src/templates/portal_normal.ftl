@@ -41,7 +41,7 @@
       </#if>
 
       <div class="user-info">
-          <#assign img_path = userService.getPortraitURL(theme_display)>
+          <#assign img_path = user.getPortraitURL(theme_display)>
             <div class="user-image">
               <img class="rounded-pill" src="${img_path}" alt="Not Found">
             </div>

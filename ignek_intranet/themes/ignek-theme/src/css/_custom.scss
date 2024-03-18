@@ -177,10 +177,7 @@ nav>ul .selected {
     display: grid;
 }
 
-#p_p_id_com_liferay_portal_search_web_search_bar_portlet_SearchBarPortlet_INSTANCE_0yG4FVof0HrY_ .portlet-content,
-#p_p_id_com_liferay_portal_search_web_search_bar_portlet_SearchBarPortlet_INSTANCE_TutxY5Pw1nTR_ .portlet-content,
-#p_p_id_com_liferay_portal_search_web_category_facet_portlet_CategoryFacetPortlet_INSTANCE_Iq6Lxmp9TuLc_ .portlet-content,
-#p_p_id_com_liferay_portal_search_web_search_results_portlet_SearchResultsPortlet_INSTANCE_2EDcJTB7chH8_ .portlet-content {
+.portlet-borderless .portlet-content{   
     padding: 0;
 }
 

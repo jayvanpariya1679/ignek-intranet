@@ -18,7 +18,9 @@
 
   <@liferay_util["include"] page=body_top_include />
 
-  <@liferay.control_menu />
+  <#if roles[0].getName() == "Administrator">
+    <@liferay.control_menu />
+  </#if>
 
   <div class="container-fluid position-relative" id="wrapper">
     <header id="banner" role="banner">
@@ -49,9 +51,7 @@
             <div class="user-name">${user_name}</div>
 
             <div class="user-role">
-              <#assign user_role=serviceLocator.findService("com.liferay.portal.kernel.service.RoleLocalService") />
-              <#assign roles=user_role.getUserRoles(user_id)>
-                <#if roles?has_content>
+              <#if roles?has_content>
                   ${roles[roles?size - 1].getName()}
                 </#if>
             </div>

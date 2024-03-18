@@ -52,7 +52,7 @@
 			switch (card) {
 				case "Employees":
 					out.print(UserLocalServiceUtil.getRoleUsersCount(
-					RoleLocalServiceUtil.getRole(PortalUtil.getDefaultCompanyId(), "Employee Role").getRoleId()));
+					RoleLocalServiceUtil.getRole(PortalUtil.getDefaultCompanyId(), "Employee").getRoleId()));
 					break;
 				case "Technologies":
 					out.print(AssetCategoryLocalServiceUtil.getAssetCategoriesCount());

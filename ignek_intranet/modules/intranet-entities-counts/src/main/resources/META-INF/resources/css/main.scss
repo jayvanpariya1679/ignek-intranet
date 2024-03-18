@@ -2,6 +2,7 @@
   --black-1: #6C6C6C;
   --white-1: #F0F1F1;
 }
+
 .header-body {
 	margin-right: 2.5rem;
 	width: 15.938rem;
@@ -27,7 +28,8 @@
 }
 
 .numbers {
-	margin-left: 11.188rem;
+	float: right;
+	margin-right: 1.25rem;
 	font-family: Poppins;
 	font-size: 30px;
 	font-weight: 900;

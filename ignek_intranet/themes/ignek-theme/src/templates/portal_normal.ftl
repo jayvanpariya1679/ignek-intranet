@@ -17,8 +17,8 @@
   <@liferay_ui["quick-access"] contentId="#main-content" />
 
   <@liferay_util["include"] page=body_top_include />
-
-  <#if roles[0].getName() == "Administrator">
+  
+  <#if is_omniadmin>
     <@liferay.control_menu />
   </#if>
 

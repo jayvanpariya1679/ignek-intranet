@@ -14,33 +14,24 @@
 
 package com.ignek.intranet.employee.service.impl;
 
+import java.util.Date;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 import com.ignek.intranet.employee.exception.NoSuchEmployeeException;
 import com.ignek.intranet.employee.model.Employee;
 import com.ignek.intranet.employee.service.base.EmployeeLocalServiceBaseImpl;
-import com.ignek.intranet.employee.service.persistence.EmployeePersistence;
 import com.liferay.counter.kernel.service.CounterLocalService;
-import com.liferay.document.library.kernel.util.PDFProcessorUtil;
-import com.liferay.headless.commerce.admin.account.dto.v1_0.User;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.service.RoleLocalService;
-import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
-import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.service.persistence.UserPersistence;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
-
-import java.util.Date;
-
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 /**
  * @author Brian Wing Shun Chan
  */
 @Component(property = "model.class.name=com.ignek.intranet.employee.model.Employee", service = AopService.class)
 public class EmployeeLocalServiceImpl extends EmployeeLocalServiceBaseImpl {
 
-//	@Reference
 	CounterLocalService counterLocalService;
 
 	@Reference
@@ -93,13 +84,7 @@ public class EmployeeLocalServiceImpl extends EmployeeLocalServiceBaseImpl {
 		employee.setCity(city);
 		employee.setZipCode(zipCode);
 		employee.setDesignation(designation);
-		/*
-		 * User user = (User) userLocalService.getUser(userId);
-		 * 
-		 * user.setFirstName(firstName); user.setLastName(lastName);
-		 * user.setEmail(emailAddress);
-		 * userLocalService.updateUser((com.liferay.portal.kernel.model.User) user);
-		 */
+		
 		return employeePersistence.update(employee);
 	}
 

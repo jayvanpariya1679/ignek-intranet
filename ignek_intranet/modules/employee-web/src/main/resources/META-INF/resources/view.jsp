@@ -81,7 +81,7 @@
       </portlet:renderURL>
 
       <portlet:renderURL var="viewEmployeeRenderURL">
-        <portlet:param name="mvcPath" value="/update-employee.jsp" />
+        <portlet:param name="mvcPath" value="/view-employee.jsp" />
         <portlet:param name="firstName" value="${emp.firstName}" />
         <portlet:param name="lastName" value="${emp.lastName}" />
         <portlet:param name="designation" value="${emp.designation}" />

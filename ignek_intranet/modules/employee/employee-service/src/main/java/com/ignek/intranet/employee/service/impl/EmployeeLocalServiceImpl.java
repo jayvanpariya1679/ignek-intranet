@@ -15,47 +15,38 @@
 package com.ignek.intranet.employee.service.impl;
 
 import java.util.Date;
+
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
+
 import com.ignek.intranet.employee.exception.NoSuchEmployeeException;
 import com.ignek.intranet.employee.model.Employee;
 import com.ignek.intranet.employee.service.base.EmployeeLocalServiceBaseImpl;
-import com.liferay.counter.kernel.service.CounterLocalService;
+import com.liferay.counter.kernel.service.CounterLocalServiceUtil;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.service.RoleLocalService;
-import com.liferay.portal.kernel.service.persistence.UserPersistence;
 import com.liferay.portal.kernel.util.Validator;
+
 /**
  * @author Brian Wing Shun Chan
  */
 @Component(property = "model.class.name=com.ignek.intranet.employee.model.Employee", service = AopService.class)
 public class EmployeeLocalServiceImpl extends EmployeeLocalServiceBaseImpl {
 
-	CounterLocalService counterLocalService;
-
-	@Reference
-	UserPersistence userPersistence;
-	
-	@Reference
-	RoleLocalService roleLocalService;
-	
 	public Employee findByFUserId(long userId) throws NoSuchEmployeeException {
 		return employeePersistence.findByFUserId(userId);
 	}
-	
-	public Employee addEmployee(long empId, long userUId, String firstName, String lastName, String emailAddress,
-			long phoneNumber, String addressLine1, String addressLine2, String city, long zipCode, String designation) {
-		
-		
+
+	public Employee addEmployee(long empId, long userId, long companyId, String firstName, String lastName,
+			String emailAddress, long phoneNumber, String addressLine1, String addressLine2, String city, long zipCode,
+			String designation) throws PortalException {
 		Employee employee = null;
 		if (Validator.isNull(employee)) {
+			empId = CounterLocalServiceUtil.increment();
 			employee = employeePersistence.create(empId);
 			employee.setEmpId(empId);
 			employee.setCreateDate(new Date());
 		}
-		
-		employee.setUserId(userUId);
+		employee.setUserId(userId);
 		employee.setModifiedDate(new Date());
 		employee.setFirstName(firstName);
 		employee.setLastName(lastName);
@@ -66,15 +57,14 @@ public class EmployeeLocalServiceImpl extends EmployeeLocalServiceBaseImpl {
 		employee.setCity(city);
 		employee.setZipCode(zipCode);
 		employee.setDesignation(designation);
-		
-		return employeePersistence.update(employee);
+
+		return employeeLocalService.updateEmployee(employee);
 	}
 
-	public Employee updateEmployee(long empId, long userUId, String firstName, String lastName, String emailAddress,
-			long phoneNumber, String addressLine1, String addressLine2, String city, long zipCode, String designation)
-			throws PortalException {
-
-		Employee employee = employeePersistence.fetchByFUserId(userUId);
+	public Employee updateEmployee(long userUniqueId, long companyId, long empId, String firstName, String lastName,
+			String emailAddress, long phoneNumber, String addressLine1, String addressLine2, String city, long zipCode,
+			String designation) throws PortalException {
+		Employee employee = employeeLocalService.getEmployee(empId);
 		employee.setFirstName(firstName);
 		employee.setLastName(lastName);
 		employee.setEmailAddress(emailAddress);
@@ -84,11 +74,6 @@ public class EmployeeLocalServiceImpl extends EmployeeLocalServiceBaseImpl {
 		employee.setCity(city);
 		employee.setZipCode(zipCode);
 		employee.setDesignation(designation);
-		
-		return employeePersistence.update(employee);
+		return employeeLocalService.updateEmployee(employee);
 	}
-
-
-
-	
 }

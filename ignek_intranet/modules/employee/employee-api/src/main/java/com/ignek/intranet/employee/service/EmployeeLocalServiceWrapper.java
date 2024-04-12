@@ -55,13 +55,16 @@ public class EmployeeLocalServiceWrapper
 
 	@Override
 	public com.ignek.intranet.employee.model.Employee addEmployee(
-		long empId, long userUId, String firstName, String lastName,
-		String emailAddress, long phoneNumber, String addressLine1,
-		String addressLine2, String city, long zipCode, String designation) {
+			long empId, long userId, long companyId, String firstName,
+			String lastName, String emailAddress, long phoneNumber,
+			String addressLine1, String addressLine2, String city, long zipCode,
+			String designation)
+		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _employeeLocalService.addEmployee(
-			empId, userUId, firstName, lastName, emailAddress, phoneNumber,
-			addressLine1, addressLine2, city, zipCode, designation);
+			empId, userId, companyId, firstName, lastName, emailAddress,
+			phoneNumber, addressLine1, addressLine2, city, zipCode,
+			designation);
 	}
 
 	/**
@@ -424,14 +427,16 @@ public class EmployeeLocalServiceWrapper
 
 	@Override
 	public com.ignek.intranet.employee.model.Employee updateEmployee(
-			long empId, long userUId, String firstName, String lastName,
-			String emailAddress, long phoneNumber, String addressLine1,
-			String addressLine2, String city, long zipCode, String designation)
+			long userUniqueId, long companyId, long empId, String firstName,
+			String lastName, String emailAddress, long phoneNumber,
+			String addressLine1, String addressLine2, String city, long zipCode,
+			String designation)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _employeeLocalService.updateEmployee(
-			empId, userUId, firstName, lastName, emailAddress, phoneNumber,
-			addressLine1, addressLine2, city, zipCode, designation);
+			userUniqueId, companyId, empId, firstName, lastName, emailAddress,
+			phoneNumber, addressLine1, addressLine2, city, zipCode,
+			designation);
 	}
 
 	@Override

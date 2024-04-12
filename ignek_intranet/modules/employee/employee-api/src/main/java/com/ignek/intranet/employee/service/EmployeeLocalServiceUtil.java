@@ -61,13 +61,16 @@ public class EmployeeLocalServiceUtil {
 	}
 
 	public static Employee addEmployee(
-		long empId, long userUId, String firstName, String lastName,
-		String emailAddress, long phoneNumber, String addressLine1,
-		String addressLine2, String city, long zipCode, String designation) {
+			long empId, long userId, long companyId, String firstName,
+			String lastName, String emailAddress, long phoneNumber,
+			String addressLine1, String addressLine2, String city, long zipCode,
+			String designation)
+		throws PortalException {
 
 		return getService().addEmployee(
-			empId, userUId, firstName, lastName, emailAddress, phoneNumber,
-			addressLine1, addressLine2, city, zipCode, designation);
+			empId, userId, companyId, firstName, lastName, emailAddress,
+			phoneNumber, addressLine1, addressLine2, city, zipCode,
+			designation);
 	}
 
 	/**
@@ -372,14 +375,16 @@ public class EmployeeLocalServiceUtil {
 	}
 
 	public static Employee updateEmployee(
-			long empId, long userUId, String firstName, String lastName,
-			String emailAddress, long phoneNumber, String addressLine1,
-			String addressLine2, String city, long zipCode, String designation)
+			long userUniqueId, long companyId, long empId, String firstName,
+			String lastName, String emailAddress, long phoneNumber,
+			String addressLine1, String addressLine2, String city, long zipCode,
+			String designation)
 		throws PortalException {
 
 		return getService().updateEmployee(
-			empId, userUId, firstName, lastName, emailAddress, phoneNumber,
-			addressLine1, addressLine2, city, zipCode, designation);
+			userUniqueId, companyId, empId, firstName, lastName, emailAddress,
+			phoneNumber, addressLine1, addressLine2, city, zipCode,
+			designation);
 	}
 
 	public static EmployeeLocalService getService() {

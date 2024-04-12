@@ -1,13 +1,11 @@
-package com.ignek.intranet.common.employee.portlet;
-
-import com.ignek.intranet.common.employee.constants.CommonPortletKeys;
-
-import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
+package com.ignek.intranet.common;
 
 import javax.portlet.Portlet;
 
 import org.osgi.service.component.annotations.Component;
 
+import com.ignek.intranet.common.constants.CommonConstants;
+import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 /**
  * @author ignek
  */
@@ -20,11 +18,11 @@ import org.osgi.service.component.annotations.Component;
 		"javax.portlet.display-name=Common",
 		"javax.portlet.init-param.template-path=/",
 		"javax.portlet.init-param.view-template=/view.jsp",
-		"javax.portlet.name=" + CommonPortletKeys.COMMON,
+		"javax.portlet.name=" + CommonConstants.PORTLET_ID,
 		"javax.portlet.resource-bundle=content.Language",
 		"javax.portlet.security-role-ref=power-user,user"
 	},
 	service = Portlet.class
 )
-public class CommonPortlet extends MVCPortlet {
+public class CommonMVC extends MVCPortlet {
 }

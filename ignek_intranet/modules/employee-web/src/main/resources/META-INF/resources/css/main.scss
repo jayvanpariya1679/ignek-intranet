@@ -8,7 +8,7 @@
      --black-light-1:#00000080;
 }
  .header-add{
-     margin-top: 58px;
+     margin-top: 48px;
      margin-bottom: 22px;
      padding-top: 12px;
 }
@@ -200,9 +200,8 @@
  #alert-box-delete {
      display: none;
      background-color: white;
-     position: absolute;
-     right: 319%;
-     top: 100%;
+     position: fixed;
+     left: 34%;
      z-index: 5;
      box-sizing: border-box;
      width: 508px;

@@ -80,9 +80,11 @@ public interface EmployeeLocalService
 	public Employee addEmployee(Employee employee);
 
 	public Employee addEmployee(
-		long empId, long userUId, String firstName, String lastName,
-		String emailAddress, long phoneNumber, String addressLine1,
-		String addressLine2, String city, long zipCode, String designation);
+			long empId, long userId, long companyId, String firstName,
+			String lastName, String emailAddress, long phoneNumber,
+			String addressLine1, String addressLine2, String city, long zipCode,
+			String designation)
+		throws PortalException;
 
 	/**
 	 * Creates a new employee with the primary key. Does not add the employee to the database.
@@ -329,9 +331,10 @@ public interface EmployeeLocalService
 	public Employee updateEmployee(Employee employee);
 
 	public Employee updateEmployee(
-			long empId, long userUId, String firstName, String lastName,
-			String emailAddress, long phoneNumber, String addressLine1,
-			String addressLine2, String city, long zipCode, String designation)
+			long userUniqueId, long companyId, long empId, String firstName,
+			String lastName, String emailAddress, long phoneNumber,
+			String addressLine1, String addressLine2, String city, long zipCode,
+			String designation)
 		throws PortalException;
 
 }

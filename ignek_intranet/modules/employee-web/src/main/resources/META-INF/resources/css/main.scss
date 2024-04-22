@@ -8,7 +8,7 @@
      --black-light-1:#00000080;
 }
  .header-add{
-     margin-top: 48px;
+     margin-top: 56px;
      margin-bottom: 22px;
      padding-top: 12px;
 }
@@ -195,7 +195,7 @@
      border: none;
      position: fixed;
      z-index: 5;
-     top: 24px;
+     top: 18px;
 }
  #alert-box-delete {
      display: none;
@@ -269,9 +269,6 @@
      text-align: left;
      color: var(--dark-gray-1);
 }
- .table-list thead .lfr-actions-column{
-     text-align: center;
-}
  .container-view{
      padding-top: 0rem;
 }
@@ -279,6 +276,9 @@
      text-decoration: none !important;
 }
  .table td:first-child, .table-list thead:first-child tr:first-child th:first-child{
+     text-align: center;
+}
+ .table td:last-child, .table-list thead:first-child tr:first-child th:last-child{
      text-align: center;
 }
  .pagination-items-per-page, .pagination-results{
@@ -341,4 +341,7 @@
 }
  .table-responsive{
      overflow-x: visible;
+}
+ #content section{
+	 margin-bottom: 0px;
 }

@@ -5,6 +5,8 @@ dependencies {
 	
 	compileOnly project(":modules:employee:employee-api")
 	compileOnly project(":modules:employee:employee-service")
-	compileOnly project(":modules:common:")
+	compileOnly project(":modules:common:")		
+	implementation group: 'com.itextpdf', name: 'itextpdf', version: '5.0.6'
+	testImplementation group: 'junit', name: 'junit', version: '4.13.2'
 
 }

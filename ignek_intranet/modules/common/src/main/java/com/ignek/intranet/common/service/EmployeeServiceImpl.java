@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.vulcan.pagination.Pagination;
 
 @Component(immediate = true, service = EmployeeService.class)
 public class EmployeeServiceImpl implements EmployeeService {
@@ -73,6 +74,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 			log.error(e.getMessage(), e);
 		}
 		userId = user.getUserId();
+
 		long roleId = roleLocalService.getRole(PortalUtil.getDefaultCompanyId(), "Employee").getRoleId();
 		roleLocalService.addUserRole(userId, roleId);
 		employeeLocalService.addEmployee(empId, userId, companyId, firstName, lastName, emailAddress, phoneNumber,
@@ -149,4 +151,30 @@ public class EmployeeServiceImpl implements EmployeeService {
 		}
 		return employeeList;
 	}
+	
+	@Override
+	public User deleteUser(long empId, long userUniqueId) throws PortalException {
+		employeeLocalService.deleteEmployee(empId);
+		User user = userLocalService.deleteUser(userUniqueId);
+		return user;
+	}
+	
+	@Override
+	public com.ignek.intranet.employee.model.Employee getEmployee(long empId) throws PortalException {
+		com.ignek.intranet.employee.model.Employee employee = employeeLocalService.getEmployee(empId);
+		return employee;
+	}
+	
+	@Override
+	public List<com.ignek.intranet.employee.model.Employee> getEmployees(Pagination pagination) throws Exception {
+		List<com.ignek.intranet.employee.model.Employee> employees = employeeLocalService
+				.getEmployees(pagination.getStartPosition(), pagination.getEndPosition());
+		return employees;
+	}
+	
+	@Override
+	public long fetchEmployee(long empId) {
+		return employeeLocalService.fetchEmployee(empId).getUserId();
+	}
+	
 }

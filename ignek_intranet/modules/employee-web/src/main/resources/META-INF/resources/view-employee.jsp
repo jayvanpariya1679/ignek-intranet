@@ -3,7 +3,7 @@
 <%@ include file="init.jsp"%>
 <%@ page import="java.util.*"%>
 <%@page import="com.ignek.intranet.employee.model.Employee"%>
-<%@ page import="com.ignek.intranet.employeeweb.crud.EmployeeWebCrud"%>
+<%@ page import="com.ignek.intranet.employeeweb.crud.portlet.EmployeeWebCrud"%>
 <portlet:actionURL name="viewEmployee" var="viewEmployeeActionURL" />
 
 <portlet:defineObjects />
@@ -49,11 +49,11 @@ String zipCode = renderRequest.getParameter("zipCode");
 			</div>
 
 			<div class="email-phone-input">
+				<aui:input cssClass="email" label="Email" name="emailAddress"
+					type="text" value="${emailAddress}" readonly="true" />
 				<aui:input cssClass="phone" label="Phone" name="phoneNumber"
 					type="text" value="<%=Long.parseLong(phoneNumber)%>"
 					readonly="true" />
-				<aui:input cssClass="email" label="Email" name="emailAddress"
-					type="text" value="${emailAddress}" readonly="true" />
 			</div>
 
 			<div class="addressline-input">

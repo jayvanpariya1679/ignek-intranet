@@ -1,0 +1,6 @@
+Bundle-Name: employee-rest-api
+Bundle-SymbolicName: com.ignek.intranet.employeerest.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.ignek.intranet.employeerest.dto.v1_0,\
+	com.ignek.intranet.employeerest.resource.v1_0

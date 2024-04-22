@@ -34,4 +34,23 @@ public class CommonConstants {
 	public static final String BIRTHDAY_YEAR = "1990";
 
 	public static final String EMPLOYEE_ROLE = "Employee";
+
+	public static final String REPORT_FIRST_NAME = "First Name";
+
+	public static final String REPORT_LAST_NAME = "Last Name";
+
+	public static final String REPORT_EMAIL_ADDRESS = "Email Address";
+
+	public static final String REPORT_PHONE_NUMBER = "Phone Number";
+
+	public static final String REPORT_ADDRESS_LINE_1 = "ADDRESS LINE 1";
+
+	public static final String REPORT_ADDRESS_LINE_2 = "ADDRESS LINE 2";
+
+	public static final String REPORT_CITY = "City";
+
+	public static final String REPORT_ZIPCODE = "Zipcode";
+
+	public static final String REPORT_DESIGNATION = "Designation";
+	
 }

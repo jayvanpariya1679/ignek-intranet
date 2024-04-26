@@ -46,7 +46,6 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 
@@ -55,7 +54,6 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -1454,215 +1452,6 @@ public class EmployeePersistenceImpl
 	private static final String _FINDER_COLUMN_UUID_C_COMPANYID_2 =
 		"employee.companyId = ?";
 
-	private FinderPath _finderPathFetchByFUserId;
-	private FinderPath _finderPathCountByFUserId;
-
-	/**
-	 * Returns the employee where userId = &#63; or throws a <code>NoSuchEmployeeException</code> if it could not be found.
-	 *
-	 * @param userId the user ID
-	 * @return the matching employee
-	 * @throws NoSuchEmployeeException if a matching employee could not be found
-	 */
-	@Override
-	public Employee findByFUserId(long userId) throws NoSuchEmployeeException {
-		Employee employee = fetchByFUserId(userId);
-
-		if (employee == null) {
-			StringBundler sb = new StringBundler(4);
-
-			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
-
-			sb.append("userId=");
-			sb.append(userId);
-
-			sb.append("}");
-
-			if (_log.isDebugEnabled()) {
-				_log.debug(sb.toString());
-			}
-
-			throw new NoSuchEmployeeException(sb.toString());
-		}
-
-		return employee;
-	}
-
-	/**
-	 * Returns the employee where userId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
-	 *
-	 * @param userId the user ID
-	 * @return the matching employee, or <code>null</code> if a matching employee could not be found
-	 */
-	@Override
-	public Employee fetchByFUserId(long userId) {
-		return fetchByFUserId(userId, true);
-	}
-
-	/**
-	 * Returns the employee where userId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
-	 *
-	 * @param userId the user ID
-	 * @param useFinderCache whether to use the finder cache
-	 * @return the matching employee, or <code>null</code> if a matching employee could not be found
-	 */
-	@Override
-	public Employee fetchByFUserId(long userId, boolean useFinderCache) {
-		Object[] finderArgs = null;
-
-		if (useFinderCache) {
-			finderArgs = new Object[] {userId};
-		}
-
-		Object result = null;
-
-		if (useFinderCache) {
-			result = finderCache.getResult(
-				_finderPathFetchByFUserId, finderArgs);
-		}
-
-		if (result instanceof Employee) {
-			Employee employee = (Employee)result;
-
-			if (userId != employee.getUserId()) {
-				result = null;
-			}
-		}
-
-		if (result == null) {
-			StringBundler sb = new StringBundler(3);
-
-			sb.append(_SQL_SELECT_EMPLOYEE_WHERE);
-
-			sb.append(_FINDER_COLUMN_FUSERID_USERID_2);
-
-			String sql = sb.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query query = session.createQuery(sql);
-
-				QueryPos queryPos = QueryPos.getInstance(query);
-
-				queryPos.add(userId);
-
-				List<Employee> list = query.list();
-
-				if (list.isEmpty()) {
-					if (useFinderCache) {
-						finderCache.putResult(
-							_finderPathFetchByFUserId, finderArgs, list);
-					}
-				}
-				else {
-					if (list.size() > 1) {
-						Collections.sort(list, Collections.reverseOrder());
-
-						if (_log.isWarnEnabled()) {
-							if (!useFinderCache) {
-								finderArgs = new Object[] {userId};
-							}
-
-							_log.warn(
-								"EmployeePersistenceImpl.fetchByFUserId(long, boolean) with parameters (" +
-									StringUtil.merge(finderArgs) +
-										") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
-						}
-					}
-
-					Employee employee = list.get(0);
-
-					result = employee;
-
-					cacheResult(employee);
-				}
-			}
-			catch (Exception exception) {
-				throw processException(exception);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		if (result instanceof List<?>) {
-			return null;
-		}
-		else {
-			return (Employee)result;
-		}
-	}
-
-	/**
-	 * Removes the employee where userId = &#63; from the database.
-	 *
-	 * @param userId the user ID
-	 * @return the employee that was removed
-	 */
-	@Override
-	public Employee removeByFUserId(long userId)
-		throws NoSuchEmployeeException {
-
-		Employee employee = findByFUserId(userId);
-
-		return remove(employee);
-	}
-
-	/**
-	 * Returns the number of employees where userId = &#63;.
-	 *
-	 * @param userId the user ID
-	 * @return the number of matching employees
-	 */
-	@Override
-	public int countByFUserId(long userId) {
-		FinderPath finderPath = _finderPathCountByFUserId;
-
-		Object[] finderArgs = new Object[] {userId};
-
-		Long count = (Long)finderCache.getResult(finderPath, finderArgs);
-
-		if (count == null) {
-			StringBundler sb = new StringBundler(2);
-
-			sb.append(_SQL_COUNT_EMPLOYEE_WHERE);
-
-			sb.append(_FINDER_COLUMN_FUSERID_USERID_2);
-
-			String sql = sb.toString();
-
-			Session session = null;
-
-			try {
-				session = openSession();
-
-				Query query = session.createQuery(sql);
-
-				QueryPos queryPos = QueryPos.getInstance(query);
-
-				queryPos.add(userId);
-
-				count = (Long)query.uniqueResult();
-
-				finderCache.putResult(finderPath, finderArgs, count);
-			}
-			catch (Exception exception) {
-				throw processException(exception);
-			}
-			finally {
-				closeSession(session);
-			}
-		}
-
-		return count.intValue();
-	}
-
-	private static final String _FINDER_COLUMN_FUSERID_USERID_2 =
-		"employee.userId = ?";
-
 	public EmployeePersistenceImpl() {
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
@@ -1691,10 +1480,6 @@ public class EmployeePersistenceImpl
 		finderCache.putResult(
 			_finderPathFetchByUUID_G,
 			new Object[] {employee.getUuid(), employee.getGroupId()}, employee);
-
-		finderCache.putResult(
-			_finderPathFetchByFUserId, new Object[] {employee.getUserId()},
-			employee);
 	}
 
 	private int _valueObjectFinderCacheListThreshold;
@@ -1774,12 +1559,6 @@ public class EmployeePersistenceImpl
 		finderCache.putResult(_finderPathCountByUUID_G, args, Long.valueOf(1));
 		finderCache.putResult(
 			_finderPathFetchByUUID_G, args, employeeModelImpl);
-
-		args = new Object[] {employeeModelImpl.getUserId()};
-
-		finderCache.putResult(_finderPathCountByFUserId, args, Long.valueOf(1));
-		finderCache.putResult(
-			_finderPathFetchByFUserId, args, employeeModelImpl);
 	}
 
 	/**
@@ -2291,15 +2070,6 @@ public class EmployeePersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
 			new String[] {"uuid_", "companyId"}, false);
-
-		_finderPathFetchByFUserId = new FinderPath(
-			FINDER_CLASS_NAME_ENTITY, "fetchByFUserId",
-			new String[] {Long.class.getName()}, new String[] {"userId"}, true);
-
-		_finderPathCountByFUserId = new FinderPath(
-			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByFUserId",
-			new String[] {Long.class.getName()}, new String[] {"userId"},
-			false);
 
 		_setEmployeeUtilPersistence(this);
 	}

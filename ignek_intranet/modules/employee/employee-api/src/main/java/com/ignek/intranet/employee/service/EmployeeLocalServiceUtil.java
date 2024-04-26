@@ -234,12 +234,6 @@ public class EmployeeLocalServiceUtil {
 		return getService().fetchEmployeeByUuidAndGroupId(uuid, groupId);
 	}
 
-	public static Employee findByFUserId(long userId)
-		throws com.ignek.intranet.employee.exception.NoSuchEmployeeException {
-
-		return getService().findByFUserId(userId);
-	}
-
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
 		getActionableDynamicQuery() {
 

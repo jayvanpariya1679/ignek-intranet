@@ -50,21 +50,18 @@ public class Mutation {
 	}
 
 	@GraphQLField
-	public Employee deleteEmployee(
-			@GraphQLName("empId") Long empId,
-			@GraphQLName("userId") Long userId)
+	public Employee deleteEmployee(@GraphQLName("empId") Long empId)
 		throws Exception {
 
 		return _applyComponentServiceObjects(
 			_employeeResourceComponentServiceObjects,
 			this::_populateResourceContext,
-			employeeResource -> employeeResource.deleteEmployee(empId, userId));
+			employeeResource -> employeeResource.deleteEmployee(empId));
 	}
 
 	@GraphQLField
 	public Response deleteEmployeeBatch(
 			@GraphQLName("empId") Long empId,
-			@GraphQLName("userId") Long userId,
 			@GraphQLName("callbackURL") String callbackURL,
 			@GraphQLName("object") Object object)
 		throws Exception {
@@ -73,7 +70,7 @@ public class Mutation {
 			_employeeResourceComponentServiceObjects,
 			this::_populateResourceContext,
 			employeeResource -> employeeResource.deleteEmployeeBatch(
-				empId, userId, callbackURL, object));
+				empId, callbackURL, object));
 	}
 
 	private <T, R, E1 extends Throwable, E2 extends Throwable> R

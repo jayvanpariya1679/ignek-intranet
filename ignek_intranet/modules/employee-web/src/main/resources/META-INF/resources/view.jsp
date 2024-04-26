@@ -16,9 +16,10 @@
 <%@page import="com.liferay.portal.kernel.service.RoleLocalServiceUtil"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="java.util.*"%>
-<%@page import="com.ignek.intranet.common.employee.dto.Employee"%>
+<%@page import="com.ignek.intranet.common.employee.model.Employee"%>
 <%@ include file="init.jsp"%>
-<%@page import="com.ignek.intranet.employeeweb.crud.portlet.EmployeeWebCrud"%>
+<%@page
+	import="com.ignek.intranet.employeeweb.crud.portlet.EmployeeWebCrud"%>
 <%@page import="com.liferay.portal.kernel.log.Log"%>
 <%@page import="com.liferay.portal.kernel.log.LogFactoryUtil"%>
 <%@page import="com.liferay.portal.kernel.util.ListUtil"%>
@@ -29,10 +30,6 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
 </script>
-			
-<%
-List<Employee> employeeList = (List<Employee>) request.getAttribute("employeeList");
-%>
 
 <portlet:actionURL var="addEmployeeActionURL">
 	<portlet:param name="mvcPath" value="/update-employee.jsp" />
@@ -64,23 +61,24 @@ List<Employee> employeeList = (List<Employee>) request.getAttribute("employeeLis
 	</div>
 
 	<liferay-portlet:renderURL varImpl="iteratorURL" />
-	<liferay-ui:search-container total="<%=employeeList.size()%>"
-		delta="10" emptyResultsMessage="no-employees-found"
+	<liferay-ui:search-container
+		total="<%=EmployeeLocalServiceUtil.getEmployeesCount()%>" delta="10"
+		emptyResultsMessage="no-employees-found"
 		iteratorURL="<%=iteratorURL%>" cssClass="table table-employee">
 		<%
 		int srNo = searchContainer.getStart() + 1;
 		%>
 		<liferay-ui:search-container-results>
 			<%
-			results = ListUtil.subList(employeeList, searchContainer.getStart(), searchContainer.getEnd());
-			total = employeeList.size();
+			results = ListUtil.subList((List<Employee>)request.getAttribute("employeeList"), searchContainer.getStart(), searchContainer.getEnd());
+			total = EmployeeLocalServiceUtil.getEmployeesCount();
 			pageContext.setAttribute("results", results);
 			pageContext.setAttribute("total", total);
 			%>
 		</liferay-ui:search-container-results>
-		
+
 		<liferay-ui:search-container-row cssClass="table-row"
-			className="com.ignek.intranet.common.employee.dto.Employee"
+			className="com.ignek.intranet.common.employee.model.Employee"
 			modelVar="emp" keyProperty="empId">
 
 			<portlet:actionURL var="updateEmployeeActionURL">
@@ -93,7 +91,7 @@ List<Employee> employeeList = (List<Employee>) request.getAttribute("employeeLis
 				<portlet:param name="addressLine1" value="${emp.addressLine1}" />
 				<portlet:param name="addressLine2" value="${emp.addressLine2}" />
 				<portlet:param name="city" value="${emp.city}" />
-				<portlet:param name="zipCode" value="${emp.zipCode}" /> 
+				<portlet:param name="zipCode" value="${emp.zipCode}" />
 				<portlet:param name="empId" value="${emp.empId}" />
 			</portlet:actionURL>
 
@@ -115,14 +113,14 @@ List<Employee> employeeList = (List<Employee>) request.getAttribute("employeeLis
 				var="deleteEmployeeActionURL">
 				<portlet:param name="empId" value="${emp.empId}" />
 			</portlet:actionURL>
-			
+
 			<portlet:resourceURL id="downloadEmployee"
 				var="downloadEmployeeResourceURL">
 				<portlet:param name="empId" value="${emp.empId}" />
 			</portlet:resourceURL>
-			
-			
-			
+
+
+
 			<%-- <%  request.setAttribute("downloadEmployee", downloadEmployeeActionURL); %> --%>
 
 			<liferay-ui:search-container-column-text name="Sr No"
@@ -170,16 +168,16 @@ List<Employee> employeeList = (List<Employee>) request.getAttribute("employeeLis
 				<%
 				}
 				%>
-				 <% String pdf = (String) request.getAttribute("byteArrayOutputStream"); 
+				<% String pdf = (String) request.getAttribute("byteArrayOutputStream"); 
 				%>
 
 
 
-  
+
 
 				<a class="btn btn-default btn-sm px-2 py-1"
-					href="<%=downloadEmployeeResourceURL %>">
-					<svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+					href="<%=downloadEmployeeResourceURL %>"> <svg width="16"
+						height="16" viewBox="0 0 16 16" fill="none"
 						xmlns="http://www.w3.org/2000/svg">
 			        <path
 							d="M8 14.5C6.27609 14.5 4.62279 13.8152 3.40381 12.5962C2.18482 11.3772 1.5 9.72391 1.5 8C1.5 6.27609 2.18482 4.62279 3.40381 3.40381C4.62279 2.18482 6.27609 1.5 8 1.5C9.72391 1.5 11.3772 2.18482 12.5962 3.40381C13.8152 4.62279 14.5 6.27609 14.5 8C14.5 9.72391 13.8152 11.3772 12.5962 12.5962C11.3772 13.8152 9.72391 14.5 8 14.5ZM8 0C5.87827 0 3.84344 0.842855 2.34315 2.34315C0.842855 3.84344 0 5.87827 0 8C0 10.1217 0.842855 12.1566 2.34315 13.6569C3.84344 15.1571 5.87827 16 8 16C10.1217 16 12.1566 15.1571 13.6569 13.6569C15.1571 12.1566 16 10.1217 16 8C16 5.87827 15.1571 3.84344 13.6569 2.34315C12.1566 0.842855 10.1217 0 8 0ZM11.7781 9.20625C11.9187 9.075 12 8.89062 12 8.69687C12 8.3125 11.6875 8 11.3031 8H9.5V5C9.5 4.44688 9.05313 4 8.5 4H7.5C6.94688 4 6.5 4.44688 6.5 5V8H4.69688C4.3125 8 4 8.3125 4 8.69687C4 8.89062 4.08125 9.075 4.22188 9.20625L7.56875 12.3281C7.6875 12.4375 7.84062 12.5 8 12.5C8.15938 12.5 8.31562 12.4375 8.43125 12.3281L11.7781 9.20625Z"

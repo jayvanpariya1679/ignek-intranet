@@ -24,27 +24,23 @@ import com.liferay.portal.vulcan.pagination.Pagination;
 /**
  * @author ignek
  */
-@Component(
-	properties = "OSGI-INF/liferay/rest/v1_0/employee.properties",
-	scope = ServiceScope.PROTOTYPE, service = EmployeeResource.class
-)
+@Component(properties = "OSGI-INF/liferay/rest/v1_0/employee.properties", scope = ServiceScope.PROTOTYPE, service = EmployeeResource.class)
 public class EmployeeResourceImpl extends BaseEmployeeResourceImpl {
-	
+
 	@Reference
 	private EmployeeLocalService employeeLocalService;
-	
+
 	@Reference
 	private EmployeeService employeeService;
-	
+
 	public static final Log _log = LogFactoryUtil.getLog(EmployeeResourceImpl.class);
-	
+
 	@Override
 	public Employee getEmployeeById(@NotNull Long empId) throws PortalException {
 		com.ignek.intranet.employee.model.Employee employee = employeeService.getEmployee(empId);
-		Employee employeeObject = getEmployeeData(employee);
-		return employeeObject;
+		return getEmployeeData(employee);
 	}
-	
+
 	public Employee getEmployeeData(com.ignek.intranet.employee.model.Employee employee) {
 		Employee employeeObject = new Employee();
 		employeeObject.setEmpId(employee.getEmpId());
@@ -60,7 +56,7 @@ public class EmployeeResourceImpl extends BaseEmployeeResourceImpl {
 		employeeObject.setDesignation(employee.getDesignation());
 		return employeeObject;
 	}
-	
+
 	@Override
 	public Employee updateEmployee(Employee employeeObject) throws Exception {
 		long empId = employeeObject.getEmpId();
@@ -88,18 +84,18 @@ public class EmployeeResourceImpl extends BaseEmployeeResourceImpl {
 		}
 		return employeeObject;
 	}
-	
+
 	@Override
-	public Employee deleteEmployee(@NotNull Long empId, Long userId) throws PortalException {
-		employeeService.deleteUser(empId, userId);
+	public Employee deleteEmployee(@NotNull Long empId) throws PortalException {
+		employeeService.deleteUser(empId);
 		Employee employeeObject = new Employee();
 		employeeObject.setStatusMessage("Deleted Successfully");
 		return employeeObject;
 	}
-	
+
 	@Override
 	public Page getEmployees(Pagination pagination) throws Exception {
-		List employeeObjects = new ArrayList<>();
+		List<Employee> employeeObjects = new ArrayList<>();
 		List<com.ignek.intranet.employee.model.Employee> employees = employeeService.getEmployees(pagination);
 		for (com.ignek.intranet.employee.model.Employee employee : employees) {
 			Employee employeeObject = getEmployeeData(employee);

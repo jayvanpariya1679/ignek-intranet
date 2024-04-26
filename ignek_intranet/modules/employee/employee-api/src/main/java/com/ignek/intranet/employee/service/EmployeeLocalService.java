@@ -14,7 +14,6 @@
 
 package com.ignek.intranet.employee.service;
 
-import com.ignek.intranet.employee.exception.NoSuchEmployeeException;
 import com.ignek.intranet.employee.model.Employee;
 
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
@@ -219,8 +218,6 @@ public interface EmployeeLocalService
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public Employee fetchEmployeeByUuidAndGroupId(String uuid, long groupId);
-
-	public Employee findByFUserId(long userId) throws NoSuchEmployeeException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();

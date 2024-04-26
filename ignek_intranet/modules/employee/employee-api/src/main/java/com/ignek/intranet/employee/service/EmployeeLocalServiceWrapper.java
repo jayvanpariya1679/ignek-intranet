@@ -262,13 +262,6 @@ public class EmployeeLocalServiceWrapper
 	}
 
 	@Override
-	public com.ignek.intranet.employee.model.Employee findByFUserId(long userId)
-		throws com.ignek.intranet.employee.exception.NoSuchEmployeeException {
-
-		return _employeeLocalService.findByFUserId(userId);
-	}
-
-	@Override
 	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
 		getActionableDynamicQuery() {
 

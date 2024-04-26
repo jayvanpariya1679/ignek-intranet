@@ -18,7 +18,6 @@ import java.util.Date;
 
 import org.osgi.service.component.annotations.Component;
 
-import com.ignek.intranet.employee.exception.NoSuchEmployeeException;
 import com.ignek.intranet.employee.model.Employee;
 import com.ignek.intranet.employee.service.base.EmployeeLocalServiceBaseImpl;
 import com.liferay.counter.kernel.service.CounterLocalServiceUtil;
@@ -31,10 +30,6 @@ import com.liferay.portal.kernel.util.Validator;
  */
 @Component(property = "model.class.name=com.ignek.intranet.employee.model.Employee", service = AopService.class)
 public class EmployeeLocalServiceImpl extends EmployeeLocalServiceBaseImpl {
-
-	public Employee findByFUserId(long userId) throws NoSuchEmployeeException {
-		return employeePersistence.findByFUserId(userId);
-	}
 
 	public Employee addEmployee(long empId, long userId, long companyId, String firstName, String lastName,
 			String emailAddress, long phoneNumber, String addressLine1, String addressLine2, String city, long zipCode,
@@ -76,4 +71,5 @@ public class EmployeeLocalServiceImpl extends EmployeeLocalServiceBaseImpl {
 		employee.setDesignation(designation);
 		return employeeLocalService.updateEmployee(employee);
 	}
+
 }

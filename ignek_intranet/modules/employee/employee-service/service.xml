@@ -5,7 +5,7 @@
 	<namespace>IgnekIntranet</namespace>
 	<entity local-service="true" name="Employee" remote-service="true" uuid="true">
 	
-		<column name="empId" primary="true" type="long" />
+		<column name="empId" type="long" primary="true"/>
 
 		<column name="groupId" type="long" />
 
@@ -27,11 +27,7 @@
 
 		<order by="asc">
 			<order-column name="empId" />
-		</order>
-
-		<finder name="FUserId" return-type="Employee">
-			<finder-column name="userId" />
-		</finder> 
+		</order> 
 		
 		<reference entity="AssetEntry" package-path="com.liferay.portlet.asset" />
 		<reference entity="AssetTag" package-path="com.liferay.portlet.asset" />

@@ -1,4 +1,4 @@
-package com.ignek.intranet.common.employee.dto;
+package com.ignek.intranet.common.employee.model;
 
 public class Employee {
 

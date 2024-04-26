@@ -50,10 +50,10 @@ public interface EmployeeResource {
 
 	public Page<Employee> getEmployees(Pagination pagination) throws Exception;
 
-	public Employee deleteEmployee(Long empId, Long userId) throws Exception;
+	public Employee deleteEmployee(Long empId) throws Exception;
 
 	public Response deleteEmployeeBatch(
-			Long empId, Long userId, String callbackURL, Object object)
+			Long empId, String callbackURL, Object object)
 		throws Exception;
 
 	public default void setContextAcceptLanguage(

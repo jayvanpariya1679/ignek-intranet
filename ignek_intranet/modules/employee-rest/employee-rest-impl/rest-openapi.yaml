@@ -85,12 +85,6 @@ paths:
           schema:
             type: integer
             format: int64
-        - in: query
-          name: userId
-          required: true
-          schema:
-            type: integer
-            format: int64
       responses:
         200:
           description: "Success Response"

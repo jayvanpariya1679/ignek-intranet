@@ -4,7 +4,7 @@ import java.util.Locale;
 
 import org.osgi.service.component.annotations.Component;
 
-import com.ignek.intranet.common.constants.CommonConstants;
+import com.ignek.intranet.common.constants.IntranetConstants;
 import com.ignek.intranet.employee.model.Employee;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -28,16 +28,16 @@ public class EmployeeModelDocumentContributor implements ModelDocumentContributo
 	public void contribute(Document document, Employee employee) {
 		try {
 			document.addDate(Field.MODIFIED_DATE, employee.getModifiedDate());
-			document.addNumber(CommonConstants.EMP_ID, employee.getEmpId());
-			document.addText(CommonConstants.FIRST_NAME, employee.getFirstName());
-			document.addText(CommonConstants.LAST_NAME, employee.getLastName());
-			document.addText(CommonConstants.EMAIL_ADDRESS, employee.getEmailAddress());
-			document.addNumber(CommonConstants.PHONE_NUMBER, employee.getPhoneNumber());
-			document.addText(CommonConstants.ADDRESS_LINE_1, employee.getAddressLine1());
-			document.addText(CommonConstants.ADDRESS_LINE_2, employee.getAddressLine2());
-			document.addText(CommonConstants.CITY, employee.getCity());
-			document.addNumber(CommonConstants.ZIPCODE, employee.getZipCode());
-			document.addText(CommonConstants.DESIGNATION, employee.getDesignation());
+			document.addNumber(IntranetConstants.EMP_ID, employee.getEmpId());
+			document.addText(IntranetConstants.FIRST_NAME, employee.getFirstName());
+			document.addText(IntranetConstants.LAST_NAME, employee.getLastName());
+			document.addText(IntranetConstants.EMAIL_ADDRESS, employee.getEmailAddress());
+			document.addNumber(IntranetConstants.PHONE_NUMBER, employee.getPhoneNumber());
+			document.addText(IntranetConstants.ADDRESS_LINE_1, employee.getAddressLine1());
+			document.addText(IntranetConstants.ADDRESS_LINE_2, employee.getAddressLine2());
+			document.addText(IntranetConstants.CITY, employee.getCity());
+			document.addNumber(IntranetConstants.ZIPCODE, employee.getZipCode());
+			document.addText(IntranetConstants.DESIGNATION, employee.getDesignation());
 
 			Locale defaultLocale = PortalUtil.getSiteDefaultLocale(employee.getGroupId());
 

@@ -1,48 +1,29 @@
 package com.ignek.intranet.employeeweb.crud.portlet;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Base64;
-import java.util.Date;
 import java.util.List;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
 import javax.portlet.Portlet;
 import javax.portlet.PortletException;
-import javax.portlet.PortletSession;
-import javax.portlet.ProcessAction;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
-import com.ignek.intranet.common.constants.CommonConstants;
-import com.ignek.intranet.common.employee.dto.Employee;
+import com.ignek.intranet.common.constants.IntranetConstants;
+import com.ignek.intranet.common.employee.model.Employee;
 import com.ignek.intranet.common.service.EmployeeService;
 import com.ignek.intranet.common.service.EmployeeServiceImpl;
-import com.ignek.intranet.employee.service.EmployeeLocalService;
 import com.ignek.intranet.employeeweb.constants.EmployeeWebConstants;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfWriter;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
+import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.ParseException;
-import com.liferay.portal.kernel.service.UserLocalService;
-import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.util.WebKeys;
 
 /**
  * @author ignek
@@ -64,9 +45,33 @@ public class EmployeeWebCrud extends MVCPortlet {
 			throws PortletException, IOException {
 		List<Employee> employeeList = new ArrayList<>();
 		try {
-			employeeList = employeeService.getDataList();
-			renderRequest.setAttribute("employeeList", employeeList);
-		} catch (ParseException e) {
+			Document[] documents = employeeService.getDataList().getDocs();
+			for (Document document : documents) {
+				Employee employee = new Employee();
+				long empId = GetterUtil.getLong(document.get(IntranetConstants.EMP_ID));
+				String firsrtName = document.get(IntranetConstants.FIRST_NAME);
+				String lastName = document.get(IntranetConstants.LAST_NAME);
+				String emailAddress = document.get(IntranetConstants.EMAIL_ADDRESS);
+				long phoneNumber = GetterUtil.getLong(document.get(IntranetConstants.PHONE_NUMBER));
+				String addressLine1 = document.get(IntranetConstants.ADDRESS_LINE_1);
+				String addressLine2 = document.get(IntranetConstants.ADDRESS_LINE_2);
+				String city = document.get(IntranetConstants.CITY);
+				long zipCode = GetterUtil.getLong(document.get(IntranetConstants.ZIPCODE));
+				String designation = document.get(IntranetConstants.DESIGNATION);
+				employee.setEmpId(empId);
+				employee.setFirstName(firsrtName);
+				employee.setLastName(lastName);
+				employee.setEmailAddress(emailAddress);
+				employee.setPhoneNumber(phoneNumber);
+				employee.setAddressLine1(addressLine1);
+				employee.setAddressLine2(addressLine2);
+				employee.setCity(city);
+				employee.setZipCode(zipCode);
+				employee.setDesignation(designation);
+				employeeList.add(employee);
+			}
+			renderRequest.setAttribute(IntranetConstants.EMPLOYEE_LIST, employeeList);
+		} catch (ParseException | SearchException e) {
 			e.printStackTrace();
 		}
 

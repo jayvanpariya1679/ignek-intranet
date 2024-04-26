@@ -3,6 +3,7 @@ package com.ignek.intranet.employee.search;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
+import com.ignek.intranet.common.constants.IntranetConstants;
 import com.ignek.intranet.employee.model.Employee;
 import com.liferay.portal.kernel.dao.orm.Property;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
@@ -26,7 +27,7 @@ public class EmployeeEntryBatchReindexerImpl implements EmployeeEntryBatchReinde
 
 		batchIndexingActionable.setAddCriteriaMethod(dynamicQuery -> {
 
-			Property empIdPropery = PropertyFactoryUtil.forName("empId");
+			Property empIdPropery = PropertyFactoryUtil.forName(IntranetConstants.EMP_ID);
 
 			dynamicQuery.add(empIdPropery.eq(empId));
 		});

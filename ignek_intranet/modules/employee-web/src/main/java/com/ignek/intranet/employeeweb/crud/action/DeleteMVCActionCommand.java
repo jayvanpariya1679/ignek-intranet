@@ -6,7 +6,7 @@ import javax.portlet.ActionResponse;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
-import com.ignek.intranet.common.constants.CommonConstants;
+import com.ignek.intranet.common.constants.IntranetConstants;
 import com.ignek.intranet.common.service.EmployeeService;
 import com.ignek.intranet.employeeweb.constants.EmployeeWebConstants;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
@@ -25,10 +25,9 @@ public class DeleteMVCActionCommand extends BaseMVCActionCommand {
 	@Override
 	protected void doProcessAction(ActionRequest actionRequest, ActionResponse actionResponse) throws Exception {
 
-		long empId = ParamUtil.getLong(actionRequest, CommonConstants.EMP_ID, GetterUtil.DEFAULT_LONG);
-		long userUniqueId = employeeService.fetchEmployee(empId);
-		if (Validator.isNotNull(userUniqueId)) {
-			employeeService.deleteUser(empId, userUniqueId);
+		long empId = ParamUtil.getLong(actionRequest, IntranetConstants.EMP_ID, GetterUtil.DEFAULT_LONG);
+		if (Validator.isNotNull(empId)) {
+			employeeService.deleteUser(empId);
 		}
 	}
 

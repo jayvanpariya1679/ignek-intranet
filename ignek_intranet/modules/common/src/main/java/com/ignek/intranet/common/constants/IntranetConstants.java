@@ -3,11 +3,11 @@ package com.ignek.intranet.common.constants;
 /**
  * @author ignek
  */
-public class CommonConstants {
-
-	public static final String PORTLET_ID = "com_ignek_intranet_common_employee_CommonPortlet";
-
+public class IntranetConstants {
+	
 	public static final String EMP_ID = "empId";
+	
+	public static final String EMPLOYEE_LIST = "employeeList";
 
 	public static final String FIRST_NAME = "firstName";
 
@@ -52,5 +52,7 @@ public class CommonConstants {
 	public static final String REPORT_ZIPCODE = "Zipcode";
 
 	public static final String REPORT_DESIGNATION = "Designation";
+	
+	public static final String USER_ID = "userId";
 	
 }

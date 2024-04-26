@@ -1,8 +1,4 @@
 Bundle-Name: common
 Bundle-SymbolicName: com.ignek.intranet.common.employee
 Bundle-Version: 1.0.0
-Export-Package: \
-	com.ignek.intranet.common.constants,\
-	com.ignek.intranet.common.employee.dto,\
-	com.ignek.intranet.common.portlet,\
-	com.ignek.intranet.common.service
+Export-Package: com.ignek.intranet.common.*

@@ -43,18 +43,17 @@ public interface EmployeeResource {
 			Pagination pagination)
 		throws Exception;
 
-	public Employee deleteEmployee(Long empId, Long userId) throws Exception;
+	public Employee deleteEmployee(Long empId) throws Exception;
 
-	public HttpInvoker.HttpResponse deleteEmployeeHttpResponse(
-			Long empId, Long userId)
+	public HttpInvoker.HttpResponse deleteEmployeeHttpResponse(Long empId)
 		throws Exception;
 
 	public void deleteEmployeeBatch(
-			Long empId, Long userId, String callbackURL, Object object)
+			Long empId, String callbackURL, Object object)
 		throws Exception;
 
 	public HttpInvoker.HttpResponse deleteEmployeeBatchHttpResponse(
-			Long empId, Long userId, String callbackURL, Object object)
+			Long empId, String callbackURL, Object object)
 		throws Exception;
 
 	public static class Builder {
@@ -370,11 +369,9 @@ public interface EmployeeResource {
 			return httpInvoker.invoke();
 		}
 
-		public Employee deleteEmployee(Long empId, Long userId)
-			throws Exception {
-
+		public Employee deleteEmployee(Long empId) throws Exception {
 			HttpInvoker.HttpResponse httpResponse = deleteEmployeeHttpResponse(
-				empId, userId);
+				empId);
 
 			String content = httpResponse.getContent();
 
@@ -413,13 +410,12 @@ public interface EmployeeResource {
 			}
 		}
 
-		public HttpInvoker.HttpResponse deleteEmployeeHttpResponse(
-				Long empId, Long userId)
+		public HttpInvoker.HttpResponse deleteEmployeeHttpResponse(Long empId)
 			throws Exception {
 
 			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
 
-			httpInvoker.body(userId.toString(), "application/json");
+			httpInvoker.body(empId.toString(), "application/json");
 
 			if (_builder._locale != null) {
 				httpInvoker.header(
@@ -444,10 +440,6 @@ public interface EmployeeResource {
 				httpInvoker.parameter("empId", String.valueOf(empId));
 			}
 
-			if (userId != null) {
-				httpInvoker.parameter("userId", String.valueOf(userId));
-			}
-
 			httpInvoker.path(
 				_builder._scheme + "://" + _builder._host + ":" +
 					_builder._port + "/o/employee-rest/v1.0/delete-employee");
@@ -459,12 +451,11 @@ public interface EmployeeResource {
 		}
 
 		public void deleteEmployeeBatch(
-				Long empId, Long userId, String callbackURL, Object object)
+				Long empId, String callbackURL, Object object)
 			throws Exception {
 
 			HttpInvoker.HttpResponse httpResponse =
-				deleteEmployeeBatchHttpResponse(
-					empId, userId, callbackURL, object);
+				deleteEmployeeBatchHttpResponse(empId, callbackURL, object);
 
 			String content = httpResponse.getContent();
 
@@ -493,7 +484,7 @@ public interface EmployeeResource {
 		}
 
 		public HttpInvoker.HttpResponse deleteEmployeeBatchHttpResponse(
-				Long empId, Long userId, String callbackURL, Object object)
+				Long empId, String callbackURL, Object object)
 			throws Exception {
 
 			HttpInvoker httpInvoker = HttpInvoker.newHttpInvoker();
@@ -521,10 +512,6 @@ public interface EmployeeResource {
 
 			if (empId != null) {
 				httpInvoker.parameter("empId", String.valueOf(empId));
-			}
-
-			if (userId != null) {
-				httpInvoker.parameter("userId", String.valueOf(userId));
 			}
 
 			if (callbackURL != null) {

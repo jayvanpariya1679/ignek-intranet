@@ -388,48 +388,6 @@ public interface EmployeePersistence extends BasePersistence<Employee> {
 	public int countByUuid_C(String uuid, long companyId);
 
 	/**
-	 * Returns the employee where userId = &#63; or throws a <code>NoSuchEmployeeException</code> if it could not be found.
-	 *
-	 * @param userId the user ID
-	 * @return the matching employee
-	 * @throws NoSuchEmployeeException if a matching employee could not be found
-	 */
-	public Employee findByFUserId(long userId) throws NoSuchEmployeeException;
-
-	/**
-	 * Returns the employee where userId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
-	 *
-	 * @param userId the user ID
-	 * @return the matching employee, or <code>null</code> if a matching employee could not be found
-	 */
-	public Employee fetchByFUserId(long userId);
-
-	/**
-	 * Returns the employee where userId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
-	 *
-	 * @param userId the user ID
-	 * @param useFinderCache whether to use the finder cache
-	 * @return the matching employee, or <code>null</code> if a matching employee could not be found
-	 */
-	public Employee fetchByFUserId(long userId, boolean useFinderCache);
-
-	/**
-	 * Removes the employee where userId = &#63; from the database.
-	 *
-	 * @param userId the user ID
-	 * @return the employee that was removed
-	 */
-	public Employee removeByFUserId(long userId) throws NoSuchEmployeeException;
-
-	/**
-	 * Returns the number of employees where userId = &#63;.
-	 *
-	 * @param userId the user ID
-	 * @return the number of matching employees
-	 */
-	public int countByFUserId(long userId);
-
-	/**
 	 * Caches the employee in the entity cache if it is enabled.
 	 *
 	 * @param employee the employee

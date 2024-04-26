@@ -3,22 +3,12 @@
 <%@ include file="init.jsp"%>
 <%@ page import="java.util.*"%>
 <%@page import="com.ignek.intranet.employee.model.Employee"%>
-<%@ page import="com.ignek.intranet.employeeweb.crud.portlet.EmployeeWebCrud"%>
+<%@ page
+	import="com.ignek.intranet.employeeweb.crud.portlet.EmployeeWebCrud"%>
 <portlet:actionURL name="viewEmployee" var="viewEmployeeActionURL" />
 
 <portlet:defineObjects />
-<%
-String empId = renderRequest.getParameter("empId");
-String firstName = renderRequest.getParameter("firstName");
-String lastName = renderRequest.getParameter("lastName");
-String designation = renderRequest.getParameter("designation");
-String phoneNumber = renderRequest.getParameter("phoneNumber");
-String emailAddress = renderRequest.getParameter("emailAddress");
-String addressLine1 = renderRequest.getParameter("addressLine1");
-String addressLine2 = renderRequest.getParameter("addressLine2");
-String city = renderRequest.getParameter("city");
-String zipCode = renderRequest.getParameter("zipCode");
-%>
+
 <div class="page-body">
 	<div class="form-body">
 		<button class="back-button"
@@ -33,43 +23,44 @@ String zipCode = renderRequest.getParameter("zipCode");
 		<span class="form-heading">Employee Form</span>
 		<aui:form method="post">
 			<aui:input name="empId" type="hidden"
-				value="<%=Long.parseLong(empId)%>" readonly="true" />
+				value="<%=Long.parseLong(renderRequest.getParameter("empId"))%>"
+				readonly="true" />
 
 			<div class="name-input">
 				<aui:input cssClass="first-name" label="First Name" name="firstName"
-					type="text" value="${firstName}" readonly="true" />
+					type="text" value="${employee.firstName}" readonly="true" />
 				<aui:input cssClass="last-name" label="Last Name" name="lastName"
-					type="text" value="${lastName}" readonly="true" />
+					type="text" value="${employee.lastName}" readonly="true" />
 			</div>
 
 			<div class="designation-form">
 				<aui:input cssClass="designation-body" label="Designation"
-					name="designation" type="text" value="${designation}"
+					name="designation" type="text" value="${employee.designation}"
 					readonly="true" />
 			</div>
 
 			<div class="email-phone-input">
 				<aui:input cssClass="email" label="Email" name="emailAddress"
-					type="text" value="${emailAddress}" readonly="true" />
+					type="text" value="${employee.emailAddress}" readonly="true" />
 				<aui:input cssClass="phone" label="Phone" name="phoneNumber"
-					type="text" value="<%=Long.parseLong(phoneNumber)%>"
-					readonly="true" />
+					type="text" value="${employee.phoneNumber}" readonly="true" />
 			</div>
 
 			<div class="addressline-input">
 				<aui:input cssClass="address-1" label="Address Line 1"
-					name="addressLine1" type="text" value="${addressLine1}"
+					name="addressLine1" type="text" value="${employee.addressLine1}"
 					readonly="true" />
 				<aui:input cssClass="address-2" label="Address Line 2"
-					name="addressLine2" type="text" value="${addressLine2}"
+					name="addressLine2" type="text" value="${employee.addressLine2}"
 					readonly="true" />
 			</div>
 
 			<div class="city-zip-input">
 				<aui:input cssClass="city-input" label="City" name="city"
-					type="text" value="${city}" readonly="true" />
+					type="text" value="${employee.city}" readonly="true" />
 				<aui:input cssClass="zip-input" label="Post Code/ Zip Code"
-					name="zipCode" type="text" value="${zipCode}" readonly="true" />
+					name="zipCode" type="text" value="${employee.zipCode}"
+					readonly="true" />
 			</div>
 		</aui:form>
 	</div>

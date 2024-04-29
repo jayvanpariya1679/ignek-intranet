@@ -124,8 +124,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Override
 	public User deleteUser(long empId) throws PortalException {
+		User user = userLocalService.deleteUser(fetchEmployeeById(empId));
 		employeeLocalService.deleteEmployee(empId);
-		return userLocalService.deleteUser(fetchEmployeeById(empId));
+		return user;
 	}
 
 	@Override

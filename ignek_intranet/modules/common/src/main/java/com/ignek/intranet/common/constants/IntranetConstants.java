@@ -52,7 +52,19 @@ public class IntranetConstants {
 	public static final String REPORT_ZIPCODE = "Zipcode";
 
 	public static final String REPORT_DESIGNATION = "Designation";
-	
+
 	public static final String USER_ID = "userId";
+
+	public static final String ACTIVITY_EVENT = "C_ActivityEvent";
+
+	public static final String ACTIVITY_CREATED_DATE = "createdDate";
+
+	public static final String ACTIVITY_UPDATED_DATE = "updatedDate";
+
+	public static final String ACTIVITY_USER_ID = "activityUserId";
+
+	public static final String ACTIVITY_IP_ADDRESS = "iPAddress";
+
+	public static final String ACTIVITY_TYPE = "activityType";
 	
 }

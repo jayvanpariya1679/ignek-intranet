@@ -6,6 +6,7 @@ public  enum ActivityType {
 	DELETE("Delete Employee","deleteEmployee"),
 	ROLE_ASSIGN("Role Assign","roleAssign"),
 	ROLE_UPDATE("Role Update","roleUpdate"),
+	ROLE_DELETE("Role Delete","roleDelete"),
 	LOGIN("Login","login"),
 	LOGOUT("Logout","logout");
 
@@ -26,4 +27,3 @@ public  enum ActivityType {
 	}
 
 }
-

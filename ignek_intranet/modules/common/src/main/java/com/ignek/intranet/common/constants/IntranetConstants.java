@@ -67,4 +67,12 @@ public class IntranetConstants {
 
 	public static final String ACTIVITY_TYPE = "activityType";
 	
+	public static final String APPLICATION_PDF ="application/pdf";
+	
+	public static final String ATTACHEMENT_FILENAME = "attachement;filename=";
+
+	public static final String PDF_EXTENTION = ".pdf";
+
+	public static final String HR_ROLE = "HR";
+	
 }

@@ -23,6 +23,7 @@
 <%@page import="com.liferay.portal.kernel.log.Log"%>
 <%@page import="com.liferay.portal.kernel.log.LogFactoryUtil"%>
 <%@page import="com.liferay.portal.kernel.util.ListUtil"%>
+<%@page import="java.util.stream.Collectors"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <portlet:defineObjects />
@@ -42,15 +43,8 @@
 			<%
 			long desiredRoleId = RoleLocalServiceUtil.getRole(themeDisplay.getCompanyId(), "HR").getRoleId();
 			long[] userRoleIds = UserLocalServiceUtil.getUser(themeDisplay.getUserId()).getRoleIds();
-
-			boolean hasRole = false;
-
-			for (long userRoleId : userRoleIds) {
-				if (userRoleId == desiredRoleId) {
-					hasRole = true;
-					break;
-				}
-			}
+			List list = Arrays.stream(userRoleIds).boxed().collect(Collectors.toList());
+			boolean hasRole = list.contains(desiredRoleId);
 			if (hasRole) {
 			%> <a href="<%=addEmployeeActionURL%>"
 			class="btn text-white btn-default add-employee"> ADD NEW EMPLOYEE</a>
@@ -70,7 +64,8 @@
 		%>
 		<liferay-ui:search-container-results>
 			<%
-			results = ListUtil.subList((List<Employee>)request.getAttribute("employeeList"), searchContainer.getStart(), searchContainer.getEnd());
+			results = ListUtil.subList((List<Employee>) request.getAttribute("employeeList"), searchContainer.getStart(),
+					searchContainer.getEnd());
 			total = EmployeeLocalServiceUtil.getEmployeesCount();
 			pageContext.setAttribute("results", results);
 			pageContext.setAttribute("total", total);
@@ -119,10 +114,6 @@
 				<portlet:param name="empId" value="${emp.empId}" />
 			</portlet:resourceURL>
 
-
-
-			<%-- <%  request.setAttribute("downloadEmployee", downloadEmployeeActionURL); %> --%>
-
 			<liferay-ui:search-container-column-text name="Sr No"
 				cssClass="sr-no" value="<%=String.valueOf(srNo++)%>" />
 
@@ -168,15 +159,12 @@
 				<%
 				}
 				%>
-				<% String pdf = (String) request.getAttribute("byteArrayOutputStream"); 
+				<%
+				String pdf = (String) request.getAttribute("byteArrayOutputStream");
 				%>
 
-
-
-
-
 				<a class="btn btn-default btn-sm px-2 py-1"
-					href="<%=downloadEmployeeResourceURL %>"> <svg width="16"
+					href="<%=downloadEmployeeResourceURL%>"> <svg width="16"
 						height="16" viewBox="0 0 16 16" fill="none"
 						xmlns="http://www.w3.org/2000/svg">
 			        <path
@@ -184,9 +172,6 @@
 							fill="#00979E" fill-opacity="0.7" />
 			      </svg>
 				</a>
-
-
-
 
 			</liferay-ui:search-container-column-text>
 
@@ -212,6 +197,4 @@
   
          confirmBox.show();
      }
-
-  
 </script>

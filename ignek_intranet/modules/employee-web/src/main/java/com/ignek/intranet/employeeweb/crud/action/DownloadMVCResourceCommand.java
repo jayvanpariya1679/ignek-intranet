@@ -61,9 +61,10 @@ public class DownloadMVCResourceCommand implements MVCResourceCommand {
 			pdfWriter.close();
 
 			byte[] bytes = byteArrayOutputStream.toByteArray();
-			resourceResponse.setContentType("application/pdf");
-			resourceResponse.setProperty(HttpHeaders.CONTENT_DISPOSITION, "attachement;filename="
-					+ employee.getFirstName() + StringPool.UNDERLINE + employee.getLastName() + ".pdf");
+			resourceResponse.setContentType(IntranetConstants.APPLICATION_PDF);
+			resourceResponse.setProperty(HttpHeaders.CONTENT_DISPOSITION,
+					IntranetConstants.ATTACHEMENT_FILENAME + employee.getFirstName() + StringPool.UNDERLINE
+							+ employee.getLastName() + IntranetConstants.PDF_EXTENTION);
 			OutputStream portletOutputStream = resourceResponse.getPortletOutputStream();
 			portletOutputStream.write(bytes);
 

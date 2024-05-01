@@ -35,7 +35,7 @@ public class EmployeeLocalServiceImpl extends EmployeeLocalServiceBaseImpl {
 			String emailAddress, long phoneNumber, String addressLine1, String addressLine2, String city, long zipCode,
 			String designation) throws PortalException {
 		Employee employee = null;
-		if (Validator.isNull(employee)) {
+		if (Validator.isNull(empId)) {
 			empId = CounterLocalServiceUtil.increment();
 			employee = employeePersistence.create(empId);
 			employee.setEmpId(empId);

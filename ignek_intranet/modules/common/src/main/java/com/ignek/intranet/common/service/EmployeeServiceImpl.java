@@ -6,12 +6,16 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 import com.ignek.intranet.common.constants.IntranetConstants;
+import com.ignek.intranet.employee.model.Employee;
 import com.ignek.intranet.employee.service.EmployeeLocalService;
+import com.liferay.headless.delivery.resource.v1_0.MessageBoardMessageResource;
+import com.liferay.mail.reader.model.Message;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.messaging.BaseMessageStatusMessageListener;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.BooleanClauseOccur;
 import com.liferay.portal.kernel.search.BooleanQuery;
@@ -30,6 +34,7 @@ import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.vulcan.pagination.Pagination;
 
 @Component(immediate = true, service = EmployeeService.class)
@@ -67,7 +72,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 			userId = user.getUserId();
 
-			long roleId = roleLocalService.getRole(PortalUtil.getDefaultCompanyId(), IntranetConstants.EMPLOYEE_ROLE).getRoleId();
+			long roleId = roleLocalService.getRole(PortalUtil.getDefaultCompanyId(), IntranetConstants.EMPLOYEE_ROLE)
+					.getRoleId();
 			roleLocalService.addUserRole(userId, roleId);
 			employeeLocalService.addEmployee(empId, userId, companyId, firstName, lastName, emailAddress, phoneNumber,
 					addressLine1, addressLine2, city, zipCode, designation);
@@ -88,9 +94,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 			user.setLastName(lastName);
 			user.setEmailAddress(emailAddress);
 
-		user = userLocalService.updateUser(user);
-		employeeLocalService.updateEmployee(userUniqueId, companyId, empId, firstName, lastName, emailAddress,
-				phoneNumber, addressLine1, addressLine2, city, zipCode, designation);
+			user = userLocalService.updateUser(user);
+
+			employeeLocalService.updateEmployee(userUniqueId, companyId, empId, firstName, lastName, emailAddress,
+					phoneNumber, addressLine1, addressLine2, city, zipCode, designation);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 		}
@@ -102,7 +109,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		BooleanQuery mainQuery = new BooleanQueryImpl();
 		BooleanQuery booleanQuery = new BooleanQueryImpl();
 		mainQuery.addRequiredTerm(Field.COMPANY_ID, PortalUtil.getDefaultCompanyId());
-		mainQuery.addRequiredTerm(Field.ENTRY_CLASS_NAME, com.ignek.intranet.employee.model.Employee.class.getName());
+		mainQuery.addRequiredTerm(Field.ENTRY_CLASS_NAME, Employee.class.getName());
 		booleanQuery.add(mainQuery, BooleanClauseOccur.MUST);
 		SearchContext searchContext = new SearchContext();
 		searchContext.setCompanyId(PortalUtil.getDefaultCompanyId());
@@ -118,19 +125,31 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	public long fetchEmployeeById(long empId) {
-		return employeeLocalService.fetchEmployee(empId).getUserId();
+	public long fetchEmployeeById(long empId) throws PortalException {
+		long userId = GetterUtil.DEFAULT_LONG;
+		try {
+			if (Validator.isNotNull(empId)) {
+				userId = employeeLocalService.fetchEmployee(empId).getUserId();
+			}
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+		}
+		return userId;
 	}
 
 	@Override
-	public User deleteUser(long empId) throws PortalException {
-		User user = userLocalService.deleteUser(fetchEmployeeById(empId));
-		employeeLocalService.deleteEmployee(empId);
-		return user;
+	public void deleteUser(long empId) throws PortalException {
+		if (Validator.isNotNull(empId)) {
+			userLocalService.deleteUser(fetchEmployeeById(empId));
+			employeeLocalService.deleteEmployee(empId);
+			log.info("User deleted");
+		} else {
+			log.info("User note deleted");
+		}
 	}
 
 	@Override
-	public com.ignek.intranet.employee.model.Employee getEmployee(long empId) throws PortalException {
+	public Employee getEmployee(long empId) throws PortalException {
 		return employeeLocalService.getEmployee(empId);
 	}
 

@@ -14,6 +14,7 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 
 @Component(immediate = true, property = { "javax.portlet.name=" + EmployeeWebConstants.PORTLET_ID,
@@ -30,8 +31,8 @@ public class UpdateMVCActionCommand extends BaseMVCActionCommand {
 
 		long empId = ParamUtil.getLong(actionRequest, IntranetConstants.EMP_ID, GetterUtil.DEFAULT_LONG);
 		long userId = themeDisplay.getUserId();
-		long userUniqueId = 0;
-		if (empId != 0) {
+		long userUniqueId = GetterUtil.DEFAULT_LONG;
+		if (Validator.isNull(userUniqueId)) {
 			userUniqueId = employeeService.fetchEmployeeById(empId);
 		}
 		long companyId = themeDisplay.getCompanyId();
@@ -49,11 +50,10 @@ public class UpdateMVCActionCommand extends BaseMVCActionCommand {
 		String designation = ParamUtil.getString(actionRequest, IntranetConstants.DESIGNATION,
 				GetterUtil.DEFAULT_STRING);
 
-		if (empId == 0) {
+		if (Validator.isNull(empId)) {
 			employeeService.addUser(empId, userId, companyId, firstName, lastName, emailAddress, phoneNumber,
 					addressLine1, addressLine2, city, zipCode, designation);
-		}
-		if (empId != 0) {
+		} else {
 			employeeService.updateUser(userUniqueId, companyId, empId, firstName, lastName, emailAddress, phoneNumber,
 					addressLine1, addressLine2, city, zipCode, designation);
 		}

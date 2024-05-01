@@ -20,13 +20,13 @@ public interface EmployeeService {
 			String emailAddress, long phoneNumber, String addressLine1, String addressLine2, String city, long zipCode,
 			String designation) throws PortalException;
 
-	User deleteUser(long empId) throws PortalException;
+	void deleteUser(long empId) throws PortalException;
 
 	Employee getEmployee(long empId) throws PortalException;
 
-	long fetchEmployeeById(long empId);
+	long fetchEmployeeById(long empId) throws PortalException;
 
-	List<com.ignek.intranet.employee.model.Employee> getEmployees(Pagination pagination) throws Exception;
+	List<Employee> getEmployees(Pagination pagination) throws Exception;
 
 	Hits getDataList() throws ParseException, SearchException;
 

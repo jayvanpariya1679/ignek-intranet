@@ -76,19 +76,31 @@ public class RoleEvent extends UserLocalServiceWrapper {
 				map.put(IntranetConstants.ACTIVITY_UPDATED_DATE, new Date());
 				map.put(IntranetConstants.ACTIVITY_USER_ID, userId);
 				map.put(IntranetConstants.ACTIVITY_IP_ADDRESS, Inet4Address.getLocalHost().getHostAddress());
-				if (userRoleIds.size() == updatedRoleIds.size()) {
-					map.put(IntranetConstants.ACTIVITY_TYPE, ActivityType.ROLE_UPDATE.getValue());
-				} else if (userRoleIds.size() < updatedRoleIds.size()) {
-					map.put(IntranetConstants.ACTIVITY_TYPE, ActivityType.ROLE_ASSIGN.getValue());
-				}
-				else if (userRoleIds.size() > updatedRoleIds.size()) {
-					map.put(IntranetConstants.ACTIVITY_TYPE, ActivityType.ROLE_DELETE.getValue());
-				}
 				long objectDefinitionId = objectDefinitionLocalService
 						.fetchObjectDefinition(PortalUtil.getDefaultCompanyId(), IntranetConstants.ACTIVITY_EVENT)
 						.getObjectDefinitionId();
-				objectEntryLocalService.addObjectEntry(userId, GetterUtil.DEFAULT_LONG, objectDefinitionId, map,
-						new ServiceContext());
+
+				if (userRoleIds.size() == updatedRoleIds.size() && ((!userRoleIds.contains(hrRoleId)
+						&& updatedRoleIds.contains(hrRoleId))
+						|| (!userRoleIds.contains(employeeRoleId) && updatedRoleIds.contains(employeeRoleId))
+						|| (userRoleIds.contains(hrRoleId) && !updatedRoleIds.contains(hrRoleId))
+						|| (userRoleIds.contains(employeeRoleId) && !updatedRoleIds.contains(employeeRoleId)))) {
+					map.put(IntranetConstants.ACTIVITY_TYPE, ActivityType.ROLE_UPDATE.getValue());
+					objectEntryLocalService.addObjectEntry(userId, GetterUtil.DEFAULT_LONG, objectDefinitionId, map,
+							new ServiceContext());
+				} else if (userRoleIds.size() < updatedRoleIds.size()
+						&& (!userRoleIds.contains(hrRoleId) && updatedRoleIds.contains(hrRoleId))
+						|| (!userRoleIds.contains(employeeRoleId) && updatedRoleIds.contains(employeeRoleId))) {
+					map.put(IntranetConstants.ACTIVITY_TYPE, ActivityType.ROLE_ASSIGN.getValue());
+					objectEntryLocalService.addObjectEntry(userId, GetterUtil.DEFAULT_LONG, objectDefinitionId, map,
+							new ServiceContext());
+				} else if (userRoleIds.size() > updatedRoleIds.size()
+						&& (userRoleIds.contains(hrRoleId) && !updatedRoleIds.contains(hrRoleId))
+						|| (userRoleIds.contains(employeeRoleId) && !updatedRoleIds.contains(employeeRoleId))) {
+					map.put(IntranetConstants.ACTIVITY_TYPE, ActivityType.ROLE_DELETE.getValue());
+					objectEntryLocalService.addObjectEntry(userId, GetterUtil.DEFAULT_LONG, objectDefinitionId, map,
+							new ServiceContext());
+				}
 			} catch (UnknownHostException e) {
 				_log.error(e.getMessage(), e);
 			}
@@ -100,6 +112,36 @@ public class RoleEvent extends UserLocalServiceWrapper {
 				organizationIds, roleIds, userGroupRoles, userGroupIds, serviceContext);
 	}
 
-	private Log _log = LogFactoryUtil.getLog(EmployeeListener.class.getName());
+	@Override
+	public User addUser(long creatorUserId, long companyId, boolean autoPassword, String password1, String password2,
+			boolean autoScreenName, String screenName, String emailAddress, Locale locale, String firstName,
+			String middleName, String lastName, long prefixId, long suffixId, boolean male, int birthdayMonth,
+			int birthdayDay, int birthdayYear, String jobTitle, long[] groupIds, long[] organizationIds, long[] roleIds,
+			long[] userGroupIds, boolean sendEmail, ServiceContext serviceContext) throws PortalException {
+
+		User user = super.addUser(creatorUserId, companyId, autoPassword, password1, password2, autoScreenName,
+				screenName, emailAddress, locale, firstName, middleName, lastName, prefixId, suffixId, male,
+				birthdayMonth, birthdayDay, birthdayYear, jobTitle, groupIds, organizationIds, roleIds, userGroupIds,
+				sendEmail, serviceContext);
+
+		Map<String, Serializable> map = new HashMap<>();
+		map.put(IntranetConstants.ACTIVITY_CREATED_DATE, userLocalService.getUser(user.getUserId()).getCreateDate());
+		map.put(IntranetConstants.ACTIVITY_UPDATED_DATE, new Date());
+		map.put(IntranetConstants.ACTIVITY_USER_ID, user.getUserId());
+		try {
+			map.put(IntranetConstants.ACTIVITY_IP_ADDRESS, Inet4Address.getLocalHost().getHostAddress());
+		} catch (UnknownHostException e) {
+			_log.error(e.getMessage(), e);
+		}
+		map.put(IntranetConstants.ACTIVITY_TYPE, ActivityType.ROLE_ASSIGN.getValue());
+		long objectDefinitionId = objectDefinitionLocalService
+				.fetchObjectDefinition(PortalUtil.getDefaultCompanyId(), IntranetConstants.ACTIVITY_EVENT)
+				.getObjectDefinitionId();
+		objectEntryLocalService.addObjectEntry(user.getUserId(), GetterUtil.DEFAULT_LONG, objectDefinitionId, map,
+				new ServiceContext());
+		return user;
+	}
+
+	private Log _log = LogFactoryUtil.getLog(RoleEvent.class.getName());
 
 }

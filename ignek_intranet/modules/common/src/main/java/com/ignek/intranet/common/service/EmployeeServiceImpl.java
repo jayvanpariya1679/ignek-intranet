@@ -1,21 +1,26 @@
 package com.ignek.intranet.common.service;
 
+import java.io.ByteArrayOutputStream;
 import java.util.List;
+
+import javax.ws.rs.core.Response;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 import com.ignek.intranet.common.constants.IntranetConstants;
+import com.ignek.intranet.common.employee.response.EmployeeResponse;
 import com.ignek.intranet.employee.model.Employee;
 import com.ignek.intranet.employee.service.EmployeeLocalService;
-import com.liferay.headless.delivery.resource.v1_0.MessageBoardMessageResource;
-import com.liferay.mail.reader.model.Message;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.messaging.BaseMessageStatusMessageListener;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.BooleanClauseOccur;
 import com.liferay.portal.kernel.search.BooleanQuery;
@@ -24,6 +29,7 @@ import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.search.IndexSearcher;
 import com.liferay.portal.kernel.search.ParseException;
 import com.liferay.portal.kernel.search.SearchContext;
+import com.liferay.portal.kernel.search.SearchEngineHelper;
 import com.liferay.portal.kernel.search.SearchEngineHelperUtil;
 import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.search.Sort;
@@ -35,7 +41,6 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.vulcan.pagination.Pagination;
 
 @Component(immediate = true, service = EmployeeService.class)
 public class EmployeeServiceImpl implements EmployeeService {
@@ -49,18 +54,23 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Reference
 	private EmployeeLocalService employeeLocalService;
 
-	public ServiceContext getServiceContext() {
-		return new ServiceContext();
+	@Reference
+	private SearchEngineHelper searchEngineHelper;
+
+	public ServiceContext getServiceContext(long companyId, long userId) {
+		ServiceContext serviceContext = new ServiceContext();
+		serviceContext.setCompanyId(companyId);
+		serviceContext.setUserId(userId);
+		return serviceContext;
 	}
 
 	@Override
-	public User addUser(long empId, long userId, long companyId, String firstName, String lastName, String emailAddress,
-			long phoneNumber, String addressLine1, String addressLine2, String city, long zipCode, String designation)
-			throws PortalException {
-		ServiceContext serviceContext = getServiceContext();
-		serviceContext.setCompanyId(companyId);
-		serviceContext.setUserId(userId);
+	public EmployeeResponse addUser(long empId, long userId, long companyId, String firstName, String lastName,
+			String emailAddress, long phoneNumber, String addressLine1, String addressLine2, String city, long zipCode,
+			String designation) throws PortalException, InstantiationException, IllegalAccessException {
+		ServiceContext serviceContext = getServiceContext(companyId, userId);
 		User user = null;
+		EmployeeResponse employeeResponse = new EmployeeResponse();
 		try {
 			user = userLocalService.addUser(userId, PortalUtil.getDefaultCompanyId(), true, StringPool.BLANK,
 					StringPool.BLANK, true, StringPool.BLANK, emailAddress, LocaleUtil.getDefault(), firstName,
@@ -69,39 +79,75 @@ public class EmployeeServiceImpl implements EmployeeService {
 					Integer.parseInt(IntranetConstants.BIRTHDAY_DAY), Integer.parseInt(IntranetConstants.BIRTHDAY_YEAR),
 					StringPool.BLANK, GetterUtil.DEFAULT_LONG_VALUES, GetterUtil.DEFAULT_LONG_VALUES,
 					GetterUtil.DEFAULT_LONG_VALUES, GetterUtil.DEFAULT_LONG_VALUES, false, serviceContext);
-
 			userId = user.getUserId();
-
 			long roleId = roleLocalService.getRole(PortalUtil.getDefaultCompanyId(), IntranetConstants.EMPLOYEE_ROLE)
 					.getRoleId();
 			roleLocalService.addUserRole(userId, roleId);
 			employeeLocalService.addEmployee(empId, userId, companyId, firstName, lastName, emailAddress, phoneNumber,
 					addressLine1, addressLine2, city, zipCode, designation);
+			employeeResponse.setStatus(Response.Status.OK);
+			employeeResponse.setMessage("employee-created");
 		} catch (Exception e) {
-			log.error(e.getMessage(), e);
+			if (e.getMessage().contains(emailAddress)) {
+				employeeResponse.setStatus(Response.Status.CONFLICT);
+				employeeResponse.setMessage("error-for-existing-email");
+			} else {
+				employeeResponse.setStatus(Response.Status.INTERNAL_SERVER_ERROR);
+				employeeResponse.setMessage("employee-not-created");
+			}
+			_log.error(e.getMessage(), e);
 		}
-		return user;
+		return employeeResponse;
 	}
 
 	@Override
-	public User updateUser(long userUniqueId, long companyId, long empId, String firstName, String lastName,
+	public EmployeeResponse updateUser(long userUniqueId, long companyId, long empId, String firstName, String lastName,
 			String emailAddress, long phoneNumber, String addressLine1, String addressLine2, String city, long zipCode,
-			String designation) throws PortalException {
+			String designation) throws PortalException, InstantiationException, IllegalAccessException {
 		User user = null;
+		EmployeeResponse employeeResponse = new EmployeeResponse();
 		try {
 			user = userLocalService.getUser(userUniqueId);
 			user.setFirstName(firstName);
 			user.setLastName(lastName);
 			user.setEmailAddress(emailAddress);
-
 			user = userLocalService.updateUser(user);
 
 			employeeLocalService.updateEmployee(userUniqueId, companyId, empId, firstName, lastName, emailAddress,
 					phoneNumber, addressLine1, addressLine2, city, zipCode, designation);
+
+			employeeResponse.setStatus(Response.Status.OK);
+			employeeResponse.setMessage("employee-updated");
 		} catch (Exception e) {
-			log.error(e.getMessage(), e);
+			if (e.getMessage().contains(IntranetConstants.CONSTRAINT_VIOLATION_EXCEPTION)) {
+				employeeResponse.setStatus(Response.Status.CONFLICT);
+				employeeResponse.setMessage("error-for-existing-email");
+			} else {
+				employeeResponse.setStatus(Response.Status.INTERNAL_SERVER_ERROR);
+				employeeResponse.setMessage("employee-not-updated");
+			}
+			_log.error(e.getMessage(), e);
 		}
-		return user;
+		return employeeResponse;
+	}
+
+	@Override
+	public EmployeeResponse deleteUser(long empId)
+			throws PortalException, InstantiationException, IllegalAccessException {
+		EmployeeResponse employeeResponse = new EmployeeResponse();
+		try {
+			if (Validator.isNotNull(empId)) {
+				userLocalService.deleteUser(fetchUserIdByEmpId(empId));
+				employeeLocalService.deleteEmployee(empId);
+				employeeResponse.setStatus(Response.Status.OK);
+				employeeResponse.setMessage("employee-deleted");
+			}
+		} catch (Exception e) {
+			employeeResponse.setStatus(Response.Status.CONFLICT);
+			employeeResponse.setMessage("employee-not-deleted");
+			_log.error(e.getMessage(), e);
+		}
+		return employeeResponse;
 	}
 
 	@Override
@@ -111,41 +157,35 @@ public class EmployeeServiceImpl implements EmployeeService {
 		mainQuery.addRequiredTerm(Field.COMPANY_ID, PortalUtil.getDefaultCompanyId());
 		mainQuery.addRequiredTerm(Field.ENTRY_CLASS_NAME, Employee.class.getName());
 		booleanQuery.add(mainQuery, BooleanClauseOccur.MUST);
+		SearchContext searchContext = setSearchContextData();
+		IndexSearcher indexSearcher = SearchEngineHelperUtil
+				.getSearchEngine(searchEngineHelper.getDefaultSearchEngineId()).getIndexSearcher();
+		Hits hits = indexSearcher.search(searchContext, booleanQuery);
+		return hits;
+	}
+
+	@Override
+	public SearchContext setSearchContextData() {
 		SearchContext searchContext = new SearchContext();
 		searchContext.setCompanyId(PortalUtil.getDefaultCompanyId());
 		searchContext.setStart(QueryUtil.ALL_POS);
 		searchContext.setEnd(QueryUtil.ALL_POS);
 		searchContext.setSorts(new Sort(IntranetConstants.EMP_ID, Sort.LONG_TYPE, false));
-		searchContext.setSearchEngineId(SearchEngineHelperUtil.getDefaultSearchEngineId());
-		IndexSearcher indexSearcher = SearchEngineHelperUtil
-				.getSearchEngine(SearchEngineHelperUtil.getDefaultSearchEngineId()).getIndexSearcher();
-		Hits hits = indexSearcher.search(searchContext, booleanQuery);
-
-		return hits;
+		searchContext.setSearchEngineId(searchEngineHelper.getDefaultSearchEngineId());
+		return searchContext;
 	}
 
 	@Override
-	public long fetchEmployeeById(long empId) throws PortalException {
+	public long fetchUserIdByEmpId(long empId) throws PortalException {
 		long userId = GetterUtil.DEFAULT_LONG;
 		try {
 			if (Validator.isNotNull(empId)) {
 				userId = employeeLocalService.fetchEmployee(empId).getUserId();
 			}
 		} catch (Exception e) {
-			log.error(e.getMessage(), e);
+			_log.error(e.getMessage(), e);
 		}
 		return userId;
-	}
-
-	@Override
-	public void deleteUser(long empId) throws PortalException {
-		if (Validator.isNotNull(empId)) {
-			userLocalService.deleteUser(fetchEmployeeById(empId));
-			employeeLocalService.deleteEmployee(empId);
-			log.info("User deleted");
-		} else {
-			log.info("User note deleted");
-		}
 	}
 
 	@Override
@@ -154,10 +194,36 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	public List<com.ignek.intranet.employee.model.Employee> getEmployees(Pagination pagination) throws Exception {
-		return employeeLocalService.getEmployees(pagination.getStartPosition(), pagination.getEndPosition());
+	public List<com.ignek.intranet.employee.model.Employee> getEmployees(int start, int end) throws Exception {
+		return employeeLocalService.getEmployees(start, end);
 	}
 
-	private Log log = LogFactoryUtil.getLog(EmployeeServiceImpl.class.getName());
+	@Override
+	public ByteArrayOutputStream getPDFDocument(long empId) throws DocumentException, PortalException {
+		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+		Employee employee = getEmployee(empId);
+		Document document = new Document();
+		PdfWriter pdfWriter = PdfWriter.getInstance(document, byteArrayOutputStream);
+		document.open();
+		document.add(new Paragraph(IntranetConstants.REPORT_FIRST_NAME + StringPool.COLON + employee.getFirstName()));
+		document.add(new Paragraph(IntranetConstants.REPORT_LAST_NAME + StringPool.COLON + employee.getLastName()));
+		document.add(
+				new Paragraph(IntranetConstants.REPORT_EMAIL_ADDRESS + StringPool.COLON + employee.getEmailAddress()));
+		document.add(
+				new Paragraph(IntranetConstants.REPORT_PHONE_NUMBER + StringPool.COLON + employee.getPhoneNumber()));
+		document.add(
+				new Paragraph(IntranetConstants.REPORT_ADDRESS_LINE_1 + StringPool.COLON + employee.getAddressLine1()));
+		document.add(
+				new Paragraph(IntranetConstants.REPORT_ADDRESS_LINE_2 + StringPool.COLON + employee.getAddressLine2()));
+		document.add(new Paragraph(IntranetConstants.REPORT_CITY + StringPool.COLON + employee.getCity()));
+		document.add(new Paragraph(IntranetConstants.REPORT_ZIPCODE + StringPool.COLON + employee.getZipCode()));
+		document.add(
+				new Paragraph(IntranetConstants.REPORT_DESIGNATION + StringPool.COLON + employee.getDesignation()));
+		document.close();
+		pdfWriter.close();
+		return byteArrayOutputStream;
+	}
+
+	private Log _log = LogFactoryUtil.getLog(EmployeeServiceImpl.class.getName());
 
 }

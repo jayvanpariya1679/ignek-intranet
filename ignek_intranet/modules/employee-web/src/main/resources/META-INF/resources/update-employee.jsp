@@ -1,6 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="init.jsp"%>
+<%@ page import="java.util.*"%>
+<%@ page import="com.liferay.portal.kernel.dao.orm.DynamicQuery"%>
+<%@ page import="com.liferay.portal.kernel.service.UserLocalServiceUtil"%>
+<%@ page
+	import="com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil"%>
+<%@ page
+	import="com.liferay.portal.kernel.dao.orm.ProjectionFactoryUtil"%>
+<%@ page
+	import="com.liferay.portal.kernel.dao.orm.QueryUtil"%>
 <portlet:defineObjects />
 <portlet:actionURL name="updateEmployee" var="updateEmployeeActionURL" />
 <aui:form action="<%=updateEmployeeActionURL%>" name="employeeForm"
@@ -88,9 +97,12 @@
 					<aui:validator name="maxLength">10</aui:validator>
 				</aui:input>
 			</div>
+			
+			
 			<div class="submit-button">
 				<aui:input type="submit" value="SUBMIT" name="update"></aui:input>
 			</div>
+			
 		</aui:form>
 	</div>
 </div>

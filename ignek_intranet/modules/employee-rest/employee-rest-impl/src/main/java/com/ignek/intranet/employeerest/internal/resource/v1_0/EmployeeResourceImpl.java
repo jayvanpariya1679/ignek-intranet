@@ -16,7 +16,6 @@ import com.ignek.intranet.employeerest.resource.v1_0.EmployeeResource;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
@@ -72,13 +71,15 @@ public class EmployeeResourceImpl extends BaseEmployeeResourceImpl {
 		String city = employeeObject.getCity();
 		long zipCode = employeeObject.getZipCode();
 		String designation = employeeObject.getDesignation();
-		User user = null;
+
 		try {
-			user = Validator.isNotNull(empId)
-					? employeeService.updateUser(userId, companyId, empId, firstName, lastName, emailAddress,
-							phoneNumber, addressLine1, addressLine2, city, zipCode, designation)
-					: employeeService.addUser(empId, currentUserId, companyId, firstName, lastName, emailAddress,
-							phoneNumber, addressLine1, addressLine2, city, zipCode, designation);
+			if (Validator.isNotNull(empId)) {
+				employeeService.updateUser(userId, companyId, empId, firstName, lastName, emailAddress, phoneNumber,
+						addressLine1, addressLine2, city, zipCode, designation);
+			} else {
+				employeeService.addUser(empId, currentUserId, companyId, firstName, lastName, emailAddress, phoneNumber,
+						addressLine1, addressLine2, city, zipCode, designation);
+			}
 		} catch (Exception e) {
 			_log.error(e.getMessage(), e);
 		}
@@ -86,7 +87,8 @@ public class EmployeeResourceImpl extends BaseEmployeeResourceImpl {
 	}
 
 	@Override
-	public Employee deleteEmployee(@NotNull Long empId) throws PortalException {
+	public Employee deleteEmployee(@NotNull Long empId)
+			throws PortalException, InstantiationException, IllegalAccessException {
 		employeeService.deleteUser(empId);
 		Employee employeeObject = new Employee();
 		employeeObject.setStatusMessage("Deleted Successfully");
@@ -96,7 +98,8 @@ public class EmployeeResourceImpl extends BaseEmployeeResourceImpl {
 	@Override
 	public Page getEmployees(Pagination pagination) throws Exception {
 		List<Employee> employeeObjects = new ArrayList<>();
-		List<com.ignek.intranet.employee.model.Employee> employees = employeeService.getEmployees(pagination);
+		List<com.ignek.intranet.employee.model.Employee> employees = employeeService
+				.getEmployees(pagination.getStartPosition(), pagination.getEndPosition());
 		for (com.ignek.intranet.employee.model.Employee employee : employees) {
 			Employee employeeObject = getEmployeeData(employee);
 			employeeObjects.add(employeeObject);

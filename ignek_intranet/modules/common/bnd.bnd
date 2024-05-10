@@ -1,4 +1,12 @@
 Bundle-Name: common
 Bundle-SymbolicName: com.ignek.intranet.common.employee
 Bundle-Version: 1.0.0
-Export-Package: com.ignek.intranet.common.*
+Export-Package: \
+	com.ignek.intranet.common.*,\
+	junit.textui,\
+	junit.framework
+-privatepackage: \
+	com.itextpdf.*,\
+	org.bouncycastle.*,\
+	junit.framework,\
+	junit.textui

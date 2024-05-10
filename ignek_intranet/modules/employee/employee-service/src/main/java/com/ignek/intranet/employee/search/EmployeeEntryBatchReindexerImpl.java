@@ -13,7 +13,7 @@ import com.liferay.portal.search.indexer.IndexerDocumentBuilder;
 import com.liferay.portal.search.indexer.IndexerWriter;
 
 @Component(immediate = true, service = EmployeeEntryBatchReindexer.class)
-public class EmployeeEntryBatchReindexerImpl implements EmployeeEntryBatchReindexer{
+public class EmployeeEntryBatchReindexerImpl implements EmployeeEntryBatchReindexer {
 
 	@Reference(target = "(indexer.class.name=com.ignek.intranet.employee.model.Employee)")
 	protected IndexerDocumentBuilder indexerDocumentBuilder;

@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.search.Document;
+import com.liferay.portal.kernel.search.Hits;
 import com.liferay.portal.kernel.search.ParseException;
 import com.liferay.portal.kernel.search.SearchException;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -45,8 +46,8 @@ public class EmployeeWebCrud extends MVCPortlet {
 			throws PortletException, IOException {
 		List<Employee> employeeList = new ArrayList<>();
 		try {
-			Document[] documents = employeeService.getDataList().getDocs();
-			for (Document document : documents) {
+			Hits hits = employeeService.getDataList();
+			for (Document document : hits.getDocs()) {
 				Employee employee = new Employee();
 				long empId = GetterUtil.getLong(document.get(IntranetConstants.EMP_ID));
 				String firsrtName = document.get(IntranetConstants.FIRST_NAME);
@@ -72,12 +73,12 @@ public class EmployeeWebCrud extends MVCPortlet {
 			}
 			renderRequest.setAttribute(IntranetConstants.EMPLOYEE_LIST, employeeList);
 		} catch (ParseException | SearchException e) {
-			e.printStackTrace();
+			_log.error(e.getMessage());
 		}
 
 		super.render(renderRequest, renderResponse);
 	}
 
-	private Log log = LogFactoryUtil.getLog(EmployeeServiceImpl.class.getName());
+	private Log _log = LogFactoryUtil.getLog(EmployeeServiceImpl.class.getName());
 
 }

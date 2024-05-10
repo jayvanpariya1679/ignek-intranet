@@ -1,15 +1,11 @@
 <%@page import="com.liferay.petra.string.StringPool"%>
-<%@page import="com.itextpdf.text.pdf.PdfContentByte"%>
-<%@page import="com.itextpdf.text.pdf.PdfDocument"%>
 <%@page import="com.liferay.portal.kernel.util.GetterUtil"%>
 <%@page
 	import="com.ignek.intranet.employee.service.EmployeeLocalService"%>
-<%@page import="org.osgi.service.component.annotations.Reference"%>
 <%@page
 	import="com.liferay.counter.kernel.service.CounterLocalServiceUtil"%>
-<%@page import="com.liferay.counter.kernel.service.CounterLocalService"%>
+
 <%@page import="com.liferay.info.pagination.Pagination"%>
-<%@page import="javax.portlet.RenderRequest"%>
 <%@page
 	import="com.ignek.intranet.employee.service.EmployeeLocalServiceUtil"%>
 <%@page import="com.liferay.portal.kernel.service.UserLocalServiceUtil"%>
@@ -20,13 +16,31 @@
 <%@ include file="init.jsp"%>
 <%@page
 	import="com.ignek.intranet.employeeweb.crud.portlet.EmployeeWebCrud"%>
-<%@page import="com.liferay.portal.kernel.log.Log"%>
-<%@page import="com.liferay.portal.kernel.log.LogFactoryUtil"%>
 <%@page import="com.liferay.portal.kernel.util.ListUtil"%>
 <%@page import="java.util.stream.Collectors"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
 <portlet:defineObjects />
+
+<liferay-ui:error embed="<%=false%>" key="error-for-existing-email"
+	message="Your email is already used, Try with another email." />
+
+<liferay-ui:success embed="<%=false%>" key="employee-created"
+	message="Employee Successfully Created" />
+
+<liferay-ui:error key="employee-not-created" embed="<%=false%>"
+	message="Employee not Created" />
+	
+<liferay-ui:success embed="<%=false%>" key="employee-updated"
+	message="Employee Successfully Updated" />
+
+<liferay-ui:error embed="<%=false%>" key="employee-not-updated"
+	message="Employee not Updated" />
+
+<liferay-ui:success embed="<%=false%>" key="employee-deleted"
+	message="Employee Successfully Deleted" />
+
+<liferay-ui:error embed="<%=false%>" key="employee-not-deleted"
+	message="Employee not Deleted" />
 
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">

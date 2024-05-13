@@ -9,8 +9,9 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ServiceScope;
 
+import com.ignek.intranet.common.constants.IntranetConstants;
 import com.ignek.intranet.common.service.EmployeeService;
-import com.ignek.intranet.employee.service.EmployeeLocalService;
+import com.ignek.intranet.common.util.CommonUtil;
 import com.ignek.intranet.employeerest.dto.v1_0.Employee;
 import com.ignek.intranet.employeerest.resource.v1_0.EmployeeResource;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -27,20 +28,18 @@ import com.liferay.portal.vulcan.pagination.Pagination;
 public class EmployeeResourceImpl extends BaseEmployeeResourceImpl {
 
 	@Reference
-	private EmployeeLocalService employeeLocalService;
-
-	@Reference
 	private EmployeeService employeeService;
 
-	public static final Log _log = LogFactoryUtil.getLog(EmployeeResourceImpl.class);
+	@Reference
+	private CommonUtil commonUtil;
 
 	@Override
 	public Employee getEmployeeById(@NotNull Long empId) throws PortalException {
-		com.ignek.intranet.employee.model.Employee employee = employeeService.getEmployee(empId);
+		com.ignek.intranet.employee.model.Employee employee = commonUtil.getEmployee(empId);
 		return getEmployeeData(employee);
 	}
 
-	public Employee getEmployeeData(com.ignek.intranet.employee.model.Employee employee) {
+	private Employee getEmployeeData(com.ignek.intranet.employee.model.Employee employee) {
 		Employee employeeObject = new Employee();
 		employeeObject.setEmpId(employee.getEmpId());
 		employeeObject.setUserId(employee.getUserId());
@@ -71,7 +70,6 @@ public class EmployeeResourceImpl extends BaseEmployeeResourceImpl {
 		String city = employeeObject.getCity();
 		long zipCode = employeeObject.getZipCode();
 		String designation = employeeObject.getDesignation();
-
 		try {
 			if (Validator.isNotNull(empId)) {
 				employeeService.updateUser(userId, companyId, empId, firstName, lastName, emailAddress, phoneNumber,
@@ -91,20 +89,22 @@ public class EmployeeResourceImpl extends BaseEmployeeResourceImpl {
 			throws PortalException, InstantiationException, IllegalAccessException {
 		employeeService.deleteUser(empId);
 		Employee employeeObject = new Employee();
-		employeeObject.setStatusMessage("Deleted Successfully");
+		employeeObject.setStatusMessage(IntranetConstants.EMPLOYEE_DELETED_STATUS_MESSAGE);
 		return employeeObject;
 	}
 
 	@Override
 	public Page getEmployees(Pagination pagination) throws Exception {
-		List<Employee> employeeObjects = new ArrayList<>();
-		List<com.ignek.intranet.employee.model.Employee> employees = employeeService
+		List<Employee> employeeList = new ArrayList<>();
+		List<com.ignek.intranet.employee.model.Employee> employees = commonUtil
 				.getEmployees(pagination.getStartPosition(), pagination.getEndPosition());
 		for (com.ignek.intranet.employee.model.Employee employee : employees) {
 			Employee employeeObject = getEmployeeData(employee);
-			employeeObjects.add(employeeObject);
+			employeeList.add(employeeObject);
 		}
-		return Page.of(employeeObjects, pagination, employeeObjects.size());
+		return Page.of(employeeList, pagination, employeeList.size());
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(EmployeeResourceImpl.class);
 
 }

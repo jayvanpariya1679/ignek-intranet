@@ -77,4 +77,18 @@ public class IntranetConstants {
 
 	public static final String CONSTRAINT_VIOLATION_EXCEPTION = "ConstraintViolationException";
 
+	public static final String EMPLOYEE_CREATED_STATUS_MESSAGE = "employee-created";
+
+	public static final String EMPLOYEE_NOT_CREATED_STATUS_MESSAGE = "employee-not-created";
+
+	public static final String EMPLOYEE_UPDATED_STATUS_MESSAGE = "employee-updated";
+
+	public static final String EMPLOYEE_NOT_UPDATED_STATUS_MESSAGE = "employee-not-updated";
+
+	public static final String EMPLOYEE_DELETED_STATUS_MESSAGE = "employee-deleted";
+
+	public static final String EMPLOYEE_NOT_DELETED_STATUS_MESSAGE = "employee-not-deleted";
+
+	public static final String ERROR_FOR_EXISTING_EMAIL_STATUS_MESSAGE = "error-for-existing-email";
+
 }

@@ -4,7 +4,6 @@
 	import="com.ignek.intranet.employee.service.EmployeeLocalService"%>
 <%@page
 	import="com.liferay.counter.kernel.service.CounterLocalServiceUtil"%>
-
 <%@page import="com.liferay.info.pagination.Pagination"%>
 <%@page
 	import="com.ignek.intranet.employee.service.EmployeeLocalServiceUtil"%>
@@ -29,7 +28,7 @@
 
 <liferay-ui:error key="employee-not-created" embed="<%=false%>"
 	message="Employee not Created" />
-	
+
 <liferay-ui:success embed="<%=false%>" key="employee-updated"
 	message="Employee Successfully Updated" />
 

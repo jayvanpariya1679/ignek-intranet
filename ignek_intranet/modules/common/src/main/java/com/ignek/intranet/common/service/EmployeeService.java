@@ -1,7 +1,15 @@
 package com.ignek.intranet.common.service;
 
+import java.io.ByteArrayOutputStream;
+import java.util.List;
+
 import com.ignek.intranet.common.employee.response.EmployeeResponse;
+import com.ignek.intranet.employee.model.Employee;
+import com.itextpdf.text.DocumentException;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.search.Hits;
+import com.liferay.portal.kernel.search.ParseException;
+import com.liferay.portal.kernel.search.SearchException;
 
 public interface EmployeeService {
 
@@ -15,4 +23,13 @@ public interface EmployeeService {
 
 	EmployeeResponse deleteUser(long empId) throws PortalException, InstantiationException, IllegalAccessException;
 
+	Hits getDataList() throws ParseException, SearchException;
+
+	long fetchUserIdByEmpId(long empId) throws PortalException;
+
+	Employee getEmployee(long empId) throws PortalException;
+
+	List<com.ignek.intranet.employee.model.Employee> getEmployees(int start, int end) throws Exception;
+
+	ByteArrayOutputStream getPDFDocument(long empId) throws DocumentException, PortalException;
 }

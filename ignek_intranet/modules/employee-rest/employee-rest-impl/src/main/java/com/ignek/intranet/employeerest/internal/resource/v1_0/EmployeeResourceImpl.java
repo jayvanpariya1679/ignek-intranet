@@ -11,7 +11,6 @@ import org.osgi.service.component.annotations.ServiceScope;
 
 import com.ignek.intranet.common.constants.IntranetConstants;
 import com.ignek.intranet.common.service.EmployeeService;
-import com.ignek.intranet.common.util.CommonUtil;
 import com.ignek.intranet.employeerest.dto.v1_0.Employee;
 import com.ignek.intranet.employeerest.resource.v1_0.EmployeeResource;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -30,12 +29,9 @@ public class EmployeeResourceImpl extends BaseEmployeeResourceImpl {
 	@Reference
 	private EmployeeService employeeService;
 
-	@Reference
-	private CommonUtil commonUtil;
-
 	@Override
 	public Employee getEmployeeById(@NotNull Long empId) throws PortalException {
-		com.ignek.intranet.employee.model.Employee employee = commonUtil.getEmployee(empId);
+		com.ignek.intranet.employee.model.Employee employee = employeeService.getEmployee(empId);
 		return getEmployeeData(employee);
 	}
 
@@ -96,7 +92,7 @@ public class EmployeeResourceImpl extends BaseEmployeeResourceImpl {
 	@Override
 	public Page getEmployees(Pagination pagination) throws Exception {
 		List<Employee> employeeList = new ArrayList<>();
-		List<com.ignek.intranet.employee.model.Employee> employees = commonUtil
+		List<com.ignek.intranet.employee.model.Employee> employees = employeeService
 				.getEmployees(pagination.getStartPosition(), pagination.getEndPosition());
 		for (com.ignek.intranet.employee.model.Employee employee : employees) {
 			Employee employeeObject = getEmployeeData(employee);

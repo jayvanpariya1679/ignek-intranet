@@ -10,7 +10,6 @@ import org.osgi.service.component.annotations.Reference;
 import com.ignek.intranet.common.constants.IntranetConstants;
 import com.ignek.intranet.common.employee.response.EmployeeResponse;
 import com.ignek.intranet.common.service.EmployeeService;
-import com.ignek.intranet.common.util.CommonUtil;
 import com.ignek.intranet.employeeweb.constants.EmployeeWebConstants;
 import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCActionCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCActionCommand;
@@ -30,16 +29,14 @@ public class UpdateMVCActionCommand extends BaseMVCActionCommand {
 	@Reference
 	private EmployeeService employeeService;
 
-	@Reference
-	private CommonUtil commonUtil;
-
 	@Override
 	protected void doProcessAction(ActionRequest actionRequest, ActionResponse actionResponse) throws Exception {
 		try {
 			ThemeDisplay themeDisplay = (ThemeDisplay) actionRequest.getAttribute(WebKeys.THEME_DISPLAY);
 
 			long empId = ParamUtil.getLong(actionRequest, IntranetConstants.EMP_ID, GetterUtil.DEFAULT_LONG);
-			long userId = Validator.isNotNull(empId) ? commonUtil.fetchUserIdByEmpId(empId) : themeDisplay.getUserId();
+			long userId = Validator.isNotNull(empId) ? employeeService.fetchUserIdByEmpId(empId)
+					: themeDisplay.getUserId();
 			long companyId = themeDisplay.getCompanyId();
 			String firstName = ParamUtil.getString(actionRequest, IntranetConstants.FIRST_NAME,
 					GetterUtil.DEFAULT_STRING);

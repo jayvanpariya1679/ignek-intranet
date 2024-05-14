@@ -14,8 +14,8 @@ import org.osgi.service.component.annotations.Reference;
 
 import com.ignek.intranet.common.constants.IntranetConstants;
 import com.ignek.intranet.common.employee.model.Employee;
+import com.ignek.intranet.common.service.EmployeeService;
 import com.ignek.intranet.common.service.EmployeeServiceImpl;
-import com.ignek.intranet.common.util.CommonUtil;
 import com.ignek.intranet.employeeweb.constants.EmployeeWebConstants;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -39,14 +39,14 @@ import com.liferay.portal.kernel.util.GetterUtil;
 public class EmployeeWebCrud extends MVCPortlet {
 
 	@Reference
-	private CommonUtil commonUtil;
+	private EmployeeService employeeService;
 
 	@Override
 	public void render(RenderRequest renderRequest, RenderResponse renderResponse)
 			throws PortletException, IOException {
 		List<Employee> employeeList = new ArrayList<>();
 		try {
-			Hits hits = commonUtil.getDataList();
+			Hits hits = employeeService.getDataList();
 			for (Document document : hits.getDocs()) {
 				Employee employee = new Employee();
 				long empId = GetterUtil.getLong(document.get(IntranetConstants.EMP_ID));

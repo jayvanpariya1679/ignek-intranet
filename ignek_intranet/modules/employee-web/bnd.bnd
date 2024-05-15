@@ -1,0 +1,13 @@
+Bundle-Name: employee-web
+Bundle-SymbolicName: com.ignek.intranet.employee
+Bundle-Version: 1.0.0
+Export-Package: \
+	com.ignek.intranet.constants,\
+	junit.framework,\
+	junit.textui
+-privatepackage: \
+	org.osgi.service.component.annotations.*,\
+	com.itextpdf.*,\
+	org.bouncycastle.*,\
+	junit.framework,\
+	junit.textui

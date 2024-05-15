@@ -1,0 +1,12 @@
+dependencies {
+	compile project(":modules:employee:employee-api")
+
+	compileOnly group: "com.liferay.portal", name: "release.portal.api"
+	compileOnly project(":modules:common")
+}
+
+buildService {
+	apiDir = "../employee-api/src/main/java"
+}
+
+group = "com.ignek.intranet.employee"

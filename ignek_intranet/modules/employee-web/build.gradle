@@ -1,0 +1,12 @@
+dependencies {
+	compileOnly group: "com.liferay.portal", name: "release.portal.api"
+
+	cssBuilder group: "com.liferay", name: "com.liferay.css.builder", version: "3.1.0"
+	
+	compileOnly project(":modules:employee:employee-api")
+	compileOnly project(":modules:employee:employee-service")
+	compileOnly project(":modules:common:")		
+	implementation group: 'com.itextpdf', name: 'itextpdf', version: '5.0.6'
+	testImplementation group: 'junit', name: 'junit', version: '4.13.2'
+
+}

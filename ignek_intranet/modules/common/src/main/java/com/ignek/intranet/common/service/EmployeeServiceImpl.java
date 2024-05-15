@@ -62,8 +62,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public EmployeeResponse addUser(long empId, long userId, long companyId, String firstName, String lastName,
 			String emailAddress, long phoneNumber, String addressLine1, String addressLine2, String city, long zipCode,
 			String designation) throws PortalException, InstantiationException, IllegalAccessException {
-		CommonUtil commonUtil = new CommonUtil();
-		ServiceContext serviceContext = commonUtil.getServiceContext(companyId, userId);
+		ServiceContext serviceContext = CommonUtil.getServiceContext(companyId, userId);
 		User user = null;
 		EmployeeResponse employeeResponse = new EmployeeResponse();
 		try {
@@ -145,13 +144,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Override
 	public Hits getDataList() throws ParseException, SearchException {
-		CommonUtil commonUtil = new CommonUtil();
 		BooleanQuery mainQuery = new BooleanQueryImpl();
 		BooleanQuery booleanQuery = new BooleanQueryImpl();
 		mainQuery.addRequiredTerm(Field.COMPANY_ID, PortalUtil.getDefaultCompanyId());
 		mainQuery.addRequiredTerm(Field.ENTRY_CLASS_NAME, Employee.class.getName());
 		booleanQuery.add(mainQuery, BooleanClauseOccur.MUST);
-		SearchContext searchContext = commonUtil.setSearchContextData(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+		SearchContext searchContext = CommonUtil.setSearchContextData(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 		searchContext.setSorts(new Sort(IntranetConstants.EMP_ID, Sort.LONG_TYPE, false));
 		searchContext.setSearchEngineId(searchEngineHelper.getDefaultSearchEngineId());
 		IndexSearcher indexSearcher = SearchEngineHelperUtil

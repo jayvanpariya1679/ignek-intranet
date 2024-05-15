@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -80,23 +81,28 @@ public class RoleEvent extends UserLocalServiceWrapper {
 						.fetchObjectDefinition(PortalUtil.getDefaultCompanyId(), IntranetConstants.ACTIVITY_EVENT)
 						.getObjectDefinitionId();
 
-				if (userRoleIds.size() == updatedRoleIds.size() && ((!userRoleIds.contains(hrRoleId)
-						&& updatedRoleIds.contains(hrRoleId))
-						|| (!userRoleIds.contains(employeeRoleId) && updatedRoleIds.contains(employeeRoleId))
-						|| (userRoleIds.contains(hrRoleId) && !updatedRoleIds.contains(hrRoleId))
-						|| (userRoleIds.contains(employeeRoleId) && !updatedRoleIds.contains(employeeRoleId)))) {
+				boolean employeeRoleContainsByUserRoleIds = userRoleIds.contains(employeeRoleId);
+				boolean employeeRoleContainsByUpdatedUserRoleIds = updatedRoleIds.contains(employeeRoleId);
+				boolean hrRoleContainsByUserRoleIds = userRoleIds.contains(hrRoleId);
+				boolean hrRoleContainsByUpdatedUserRoleIds = updatedRoleIds.contains(hrRoleId);
+
+				if (userRoleIds.size() == updatedRoleIds.size()
+						&& ((!hrRoleContainsByUserRoleIds && hrRoleContainsByUpdatedUserRoleIds)
+								|| (!employeeRoleContainsByUserRoleIds && employeeRoleContainsByUpdatedUserRoleIds)
+								|| (hrRoleContainsByUserRoleIds && !hrRoleContainsByUpdatedUserRoleIds)
+								|| (employeeRoleContainsByUserRoleIds && !employeeRoleContainsByUpdatedUserRoleIds))) {
 					map.put(IntranetConstants.ACTIVITY_TYPE, ActivityType.ROLE_UPDATE.getValue());
 					objectEntryLocalService.addObjectEntry(userId, GetterUtil.DEFAULT_LONG, objectDefinitionId, map,
 							new ServiceContext());
 				} else if (userRoleIds.size() < updatedRoleIds.size()
-						&& (!userRoleIds.contains(hrRoleId) && updatedRoleIds.contains(hrRoleId))
-						|| (!userRoleIds.contains(employeeRoleId) && updatedRoleIds.contains(employeeRoleId))) {
+						&& (!hrRoleContainsByUserRoleIds && hrRoleContainsByUpdatedUserRoleIds)
+						|| (!employeeRoleContainsByUserRoleIds && employeeRoleContainsByUpdatedUserRoleIds)) {
 					map.put(IntranetConstants.ACTIVITY_TYPE, ActivityType.ROLE_ASSIGN.getValue());
 					objectEntryLocalService.addObjectEntry(userId, GetterUtil.DEFAULT_LONG, objectDefinitionId, map,
 							new ServiceContext());
 				} else if (userRoleIds.size() > updatedRoleIds.size()
-						&& (userRoleIds.contains(hrRoleId) && !updatedRoleIds.contains(hrRoleId))
-						|| (userRoleIds.contains(employeeRoleId) && !updatedRoleIds.contains(employeeRoleId))) {
+						&& (hrRoleContainsByUserRoleIds && !hrRoleContainsByUpdatedUserRoleIds)
+						|| (employeeRoleContainsByUserRoleIds && !employeeRoleContainsByUpdatedUserRoleIds)) {
 					map.put(IntranetConstants.ACTIVITY_TYPE, ActivityType.ROLE_DELETE.getValue());
 					objectEntryLocalService.addObjectEntry(userId, GetterUtil.DEFAULT_LONG, objectDefinitionId, map,
 							new ServiceContext());

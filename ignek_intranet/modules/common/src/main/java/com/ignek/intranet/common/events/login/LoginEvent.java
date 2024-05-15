@@ -11,7 +11,7 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 import com.ignek.intranet.common.constants.IntranetConstants;
-import com.ignek.intranet.common.events.ActivityType;
+import com.ignek.intranet.common.events.listener.ActivityType;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectEntryLocalService;
 import com.liferay.portal.kernel.events.ActionException;

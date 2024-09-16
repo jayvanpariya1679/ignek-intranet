@@ -1,6 +1,5 @@
 dependencies {
-	compile project(":modules:employee:employee-api")
-
+    compileOnly project(":modules:employee:employee-api")
 	compileOnly group: "com.liferay.portal", name: "release.portal.api"
 	compileOnly project(":modules:common")
 }

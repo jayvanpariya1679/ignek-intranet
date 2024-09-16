@@ -90,5 +90,13 @@ public class IntranetConstants {
 	public static final String EMPLOYEE_NOT_DELETED_STATUS_MESSAGE = "employee-not-deleted";
 
 	public static final String ERROR_FOR_EXISTING_EMAIL_STATUS_MESSAGE = "error-for-existing-email";
+	
+	public static final String WEB_CONTENT_TITLE = "Text40079433";
+	
+	public static final String WEB_CONTENT_DESCRIPTION = "Text55178148";
+	
+	public static final String WEB_CONTENT_IMAGE_ICON = "Image19920890";
+			
+	public static final String WEB_CONTENT_RADIO_OPTION = "Option32410370";
 
 }

@@ -3,7 +3,7 @@
 
 <service-builder dependency-injector="ds" package-path="com.ignek.intranet.employee">
 	<namespace>IgnekIntranet</namespace>
-	<entity local-service="true" name="Employee" remote-service="true" uuid="true">
+	<entity local-service="true" name="Employee" remote-service="false" uuid="true">
 	
 		<column name="empId" type="long" primary="true"/>
 
@@ -27,7 +27,11 @@
 
 		<order by="asc">
 			<order-column name="empId" />
-		</order> 
+		</order>
+
+        <finder name="EmailAddress" return-type="Collection">
+            <finder-column name="emailAddress" />
+        </finder>
 		
 		<reference entity="AssetEntry" package-path="com.liferay.portlet.asset" />
 		<reference entity="AssetTag" package-path="com.liferay.portlet.asset" />

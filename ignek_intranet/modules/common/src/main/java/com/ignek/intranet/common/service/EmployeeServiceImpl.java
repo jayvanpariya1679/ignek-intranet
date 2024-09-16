@@ -77,7 +77,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 			long roleId = roleLocalService.getRole(PortalUtil.getDefaultCompanyId(), IntranetConstants.EMPLOYEE_ROLE)
 					.getRoleId();
 			roleLocalService.addUserRole(userId, roleId);
-			employeeLocalService.addEmployee(empId, userId, companyId, firstName, lastName, emailAddress, phoneNumber,
+			employeeLocalService.saveEmployee(empId, userId, companyId, firstName, lastName, emailAddress, phoneNumber,
 					addressLine1, addressLine2, city, zipCode, designation);
 			employeeResponse.setStatus(Response.Status.OK);
 			employeeResponse.setMessage(IntranetConstants.EMPLOYEE_CREATED_STATUS_MESSAGE);
@@ -95,19 +95,19 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	public EmployeeResponse updateUser(long userUniqueId, long companyId, long empId, String firstName, String lastName,
+	public EmployeeResponse updateUser(long userId, long companyId, long empId, String firstName, String lastName,
 			String emailAddress, long phoneNumber, String addressLine1, String addressLine2, String city, long zipCode,
 			String designation) throws PortalException, InstantiationException, IllegalAccessException {
 		User user = null;
 		EmployeeResponse employeeResponse = new EmployeeResponse();
 		try {
-			user = userLocalService.getUser(userUniqueId);
+			user = userLocalService.getUser(userId);
 			user.setFirstName(firstName);
 			user.setLastName(lastName);
 			user.setEmailAddress(emailAddress);
 			user = userLocalService.updateUser(user);
-			employeeLocalService.updateEmployee(userUniqueId, companyId, empId, firstName, lastName, emailAddress,
-					phoneNumber, addressLine1, addressLine2, city, zipCode, designation);
+			employeeLocalService.saveEmployee(empId, userId, companyId, firstName, lastName, emailAddress, phoneNumber,
+					addressLine1, addressLine2, city, zipCode, designation);
 			employeeResponse.setStatus(Response.Status.OK);
 			employeeResponse.setMessage(IntranetConstants.EMPLOYEE_UPDATED_STATUS_MESSAGE);
 		} catch (Exception e) {

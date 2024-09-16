@@ -60,19 +60,6 @@ public class EmployeeLocalServiceUtil {
 		return getService().addEmployee(employee);
 	}
 
-	public static Employee addEmployee(
-			long empId, long userId, long companyId, String firstName,
-			String lastName, String emailAddress, long phoneNumber,
-			String addressLine1, String addressLine2, String city, long zipCode,
-			String designation)
-		throws PortalException {
-
-		return getService().addEmployee(
-			empId, userId, companyId, firstName, lastName, emailAddress,
-			phoneNumber, addressLine1, addressLine2, city, zipCode,
-			designation);
-	}
-
 	/**
 	 * Creates a new employee with the primary key. Does not add the employee to the database.
 	 *
@@ -354,6 +341,19 @@ public class EmployeeLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
+	public static Employee saveEmployee(
+			long empId, long userId, long companyId, String firstName,
+			String lastName, String emailAddress, long phoneNumber,
+			String addressLine1, String addressLine2, String city, long zipCode,
+			String designation)
+		throws PortalException {
+
+		return getService().saveEmployee(
+			empId, userId, companyId, firstName, lastName, emailAddress,
+			phoneNumber, addressLine1, addressLine2, city, zipCode,
+			designation);
+	}
+
 	/**
 	 * Updates the employee in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *
@@ -366,19 +366,6 @@ public class EmployeeLocalServiceUtil {
 	 */
 	public static Employee updateEmployee(Employee employee) {
 		return getService().updateEmployee(employee);
-	}
-
-	public static Employee updateEmployee(
-			long userUniqueId, long companyId, long empId, String firstName,
-			String lastName, String emailAddress, long phoneNumber,
-			String addressLine1, String addressLine2, String city, long zipCode,
-			String designation)
-		throws PortalException {
-
-		return getService().updateEmployee(
-			userUniqueId, companyId, empId, firstName, lastName, emailAddress,
-			phoneNumber, addressLine1, addressLine2, city, zipCode,
-			designation);
 	}
 
 	public static EmployeeLocalService getService() {

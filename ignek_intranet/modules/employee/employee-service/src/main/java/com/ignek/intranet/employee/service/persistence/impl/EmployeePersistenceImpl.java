@@ -1452,6 +1452,544 @@ public class EmployeePersistenceImpl
 	private static final String _FINDER_COLUMN_UUID_C_COMPANYID_2 =
 		"employee.companyId = ?";
 
+	private FinderPath _finderPathWithPaginationFindByEmailAddress;
+	private FinderPath _finderPathWithoutPaginationFindByEmailAddress;
+	private FinderPath _finderPathCountByEmailAddress;
+
+	/**
+	 * Returns all the employees where emailAddress = &#63;.
+	 *
+	 * @param emailAddress the email address
+	 * @return the matching employees
+	 */
+	@Override
+	public List<Employee> findByEmailAddress(String emailAddress) {
+		return findByEmailAddress(
+			emailAddress, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Returns a range of all the employees where emailAddress = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>EmployeeModelImpl</code>.
+	 * </p>
+	 *
+	 * @param emailAddress the email address
+	 * @param start the lower bound of the range of employees
+	 * @param end the upper bound of the range of employees (not inclusive)
+	 * @return the range of matching employees
+	 */
+	@Override
+	public List<Employee> findByEmailAddress(
+		String emailAddress, int start, int end) {
+
+		return findByEmailAddress(emailAddress, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the employees where emailAddress = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>EmployeeModelImpl</code>.
+	 * </p>
+	 *
+	 * @param emailAddress the email address
+	 * @param start the lower bound of the range of employees
+	 * @param end the upper bound of the range of employees (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching employees
+	 */
+	@Override
+	public List<Employee> findByEmailAddress(
+		String emailAddress, int start, int end,
+		OrderByComparator<Employee> orderByComparator) {
+
+		return findByEmailAddress(
+			emailAddress, start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the employees where emailAddress = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>EmployeeModelImpl</code>.
+	 * </p>
+	 *
+	 * @param emailAddress the email address
+	 * @param start the lower bound of the range of employees
+	 * @param end the upper bound of the range of employees (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching employees
+	 */
+	@Override
+	public List<Employee> findByEmailAddress(
+		String emailAddress, int start, int end,
+		OrderByComparator<Employee> orderByComparator, boolean useFinderCache) {
+
+		emailAddress = Objects.toString(emailAddress, "");
+
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
+
+		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindByEmailAddress;
+				finderArgs = new Object[] {emailAddress};
+			}
+		}
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindByEmailAddress;
+			finderArgs = new Object[] {
+				emailAddress, start, end, orderByComparator
+			};
+		}
+
+		List<Employee> list = null;
+
+		if (useFinderCache) {
+			list = (List<Employee>)finderCache.getResult(
+				finderPath, finderArgs);
+
+			if ((list != null) && !list.isEmpty()) {
+				for (Employee employee : list) {
+					if (!emailAddress.equals(employee.getEmailAddress())) {
+						list = null;
+
+						break;
+					}
+				}
+			}
+		}
+
+		if (list == null) {
+			StringBundler sb = null;
+
+			if (orderByComparator != null) {
+				sb = new StringBundler(
+					3 + (orderByComparator.getOrderByFields().length * 2));
+			}
+			else {
+				sb = new StringBundler(3);
+			}
+
+			sb.append(_SQL_SELECT_EMPLOYEE_WHERE);
+
+			boolean bindEmailAddress = false;
+
+			if (emailAddress.isEmpty()) {
+				sb.append(_FINDER_COLUMN_EMAILADDRESS_EMAILADDRESS_3);
+			}
+			else {
+				bindEmailAddress = true;
+
+				sb.append(_FINDER_COLUMN_EMAILADDRESS_EMAILADDRESS_2);
+			}
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+			}
+			else {
+				sb.append(EmployeeModelImpl.ORDER_BY_JPQL);
+			}
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				if (bindEmailAddress) {
+					queryPos.add(emailAddress);
+				}
+
+				list = (List<Employee>)QueryUtil.list(
+					query, getDialect(), start, end);
+
+				cacheResult(list);
+
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Returns the first employee in the ordered set where emailAddress = &#63;.
+	 *
+	 * @param emailAddress the email address
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching employee
+	 * @throws NoSuchEmployeeException if a matching employee could not be found
+	 */
+	@Override
+	public Employee findByEmailAddress_First(
+			String emailAddress, OrderByComparator<Employee> orderByComparator)
+		throws NoSuchEmployeeException {
+
+		Employee employee = fetchByEmailAddress_First(
+			emailAddress, orderByComparator);
+
+		if (employee != null) {
+			return employee;
+		}
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("emailAddress=");
+		sb.append(emailAddress);
+
+		sb.append("}");
+
+		throw new NoSuchEmployeeException(sb.toString());
+	}
+
+	/**
+	 * Returns the first employee in the ordered set where emailAddress = &#63;.
+	 *
+	 * @param emailAddress the email address
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching employee, or <code>null</code> if a matching employee could not be found
+	 */
+	@Override
+	public Employee fetchByEmailAddress_First(
+		String emailAddress, OrderByComparator<Employee> orderByComparator) {
+
+		List<Employee> list = findByEmailAddress(
+			emailAddress, 0, 1, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the last employee in the ordered set where emailAddress = &#63;.
+	 *
+	 * @param emailAddress the email address
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching employee
+	 * @throws NoSuchEmployeeException if a matching employee could not be found
+	 */
+	@Override
+	public Employee findByEmailAddress_Last(
+			String emailAddress, OrderByComparator<Employee> orderByComparator)
+		throws NoSuchEmployeeException {
+
+		Employee employee = fetchByEmailAddress_Last(
+			emailAddress, orderByComparator);
+
+		if (employee != null) {
+			return employee;
+		}
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("emailAddress=");
+		sb.append(emailAddress);
+
+		sb.append("}");
+
+		throw new NoSuchEmployeeException(sb.toString());
+	}
+
+	/**
+	 * Returns the last employee in the ordered set where emailAddress = &#63;.
+	 *
+	 * @param emailAddress the email address
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching employee, or <code>null</code> if a matching employee could not be found
+	 */
+	@Override
+	public Employee fetchByEmailAddress_Last(
+		String emailAddress, OrderByComparator<Employee> orderByComparator) {
+
+		int count = countByEmailAddress(emailAddress);
+
+		if (count == 0) {
+			return null;
+		}
+
+		List<Employee> list = findByEmailAddress(
+			emailAddress, count - 1, count, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the employees before and after the current employee in the ordered set where emailAddress = &#63;.
+	 *
+	 * @param empId the primary key of the current employee
+	 * @param emailAddress the email address
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next employee
+	 * @throws NoSuchEmployeeException if a employee with the primary key could not be found
+	 */
+	@Override
+	public Employee[] findByEmailAddress_PrevAndNext(
+			long empId, String emailAddress,
+			OrderByComparator<Employee> orderByComparator)
+		throws NoSuchEmployeeException {
+
+		emailAddress = Objects.toString(emailAddress, "");
+
+		Employee employee = findByPrimaryKey(empId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			Employee[] array = new EmployeeImpl[3];
+
+			array[0] = getByEmailAddress_PrevAndNext(
+				session, employee, emailAddress, orderByComparator, true);
+
+			array[1] = employee;
+
+			array[2] = getByEmailAddress_PrevAndNext(
+				session, employee, emailAddress, orderByComparator, false);
+
+			return array;
+		}
+		catch (Exception exception) {
+			throw processException(exception);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	protected Employee getByEmailAddress_PrevAndNext(
+		Session session, Employee employee, String emailAddress,
+		OrderByComparator<Employee> orderByComparator, boolean previous) {
+
+		StringBundler sb = null;
+
+		if (orderByComparator != null) {
+			sb = new StringBundler(
+				4 + (orderByComparator.getOrderByConditionFields().length * 3) +
+					(orderByComparator.getOrderByFields().length * 3));
+		}
+		else {
+			sb = new StringBundler(3);
+		}
+
+		sb.append(_SQL_SELECT_EMPLOYEE_WHERE);
+
+		boolean bindEmailAddress = false;
+
+		if (emailAddress.isEmpty()) {
+			sb.append(_FINDER_COLUMN_EMAILADDRESS_EMAILADDRESS_3);
+		}
+		else {
+			bindEmailAddress = true;
+
+			sb.append(_FINDER_COLUMN_EMAILADDRESS_EMAILADDRESS_2);
+		}
+
+		if (orderByComparator != null) {
+			String[] orderByConditionFields =
+				orderByComparator.getOrderByConditionFields();
+
+			if (orderByConditionFields.length > 0) {
+				sb.append(WHERE_AND);
+			}
+
+			for (int i = 0; i < orderByConditionFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByConditionFields[i]);
+
+				if ((i + 1) < orderByConditionFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN);
+					}
+				}
+			}
+
+			sb.append(ORDER_BY_CLAUSE);
+
+			String[] orderByFields = orderByComparator.getOrderByFields();
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByFields[i]);
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC_HAS_NEXT);
+					}
+					else {
+						sb.append(ORDER_BY_DESC_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC);
+					}
+					else {
+						sb.append(ORDER_BY_DESC);
+					}
+				}
+			}
+		}
+		else {
+			sb.append(EmployeeModelImpl.ORDER_BY_JPQL);
+		}
+
+		String sql = sb.toString();
+
+		Query query = session.createQuery(sql);
+
+		query.setFirstResult(0);
+		query.setMaxResults(2);
+
+		QueryPos queryPos = QueryPos.getInstance(query);
+
+		if (bindEmailAddress) {
+			queryPos.add(emailAddress);
+		}
+
+		if (orderByComparator != null) {
+			for (Object orderByConditionValue :
+					orderByComparator.getOrderByConditionValues(employee)) {
+
+				queryPos.add(orderByConditionValue);
+			}
+		}
+
+		List<Employee> list = query.list();
+
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * Removes all the employees where emailAddress = &#63; from the database.
+	 *
+	 * @param emailAddress the email address
+	 */
+	@Override
+	public void removeByEmailAddress(String emailAddress) {
+		for (Employee employee :
+				findByEmailAddress(
+					emailAddress, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
+
+			remove(employee);
+		}
+	}
+
+	/**
+	 * Returns the number of employees where emailAddress = &#63;.
+	 *
+	 * @param emailAddress the email address
+	 * @return the number of matching employees
+	 */
+	@Override
+	public int countByEmailAddress(String emailAddress) {
+		emailAddress = Objects.toString(emailAddress, "");
+
+		FinderPath finderPath = _finderPathCountByEmailAddress;
+
+		Object[] finderArgs = new Object[] {emailAddress};
+
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs);
+
+		if (count == null) {
+			StringBundler sb = new StringBundler(2);
+
+			sb.append(_SQL_COUNT_EMPLOYEE_WHERE);
+
+			boolean bindEmailAddress = false;
+
+			if (emailAddress.isEmpty()) {
+				sb.append(_FINDER_COLUMN_EMAILADDRESS_EMAILADDRESS_3);
+			}
+			else {
+				bindEmailAddress = true;
+
+				sb.append(_FINDER_COLUMN_EMAILADDRESS_EMAILADDRESS_2);
+			}
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				if (bindEmailAddress) {
+					queryPos.add(emailAddress);
+				}
+
+				count = (Long)query.uniqueResult();
+
+				finderCache.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_EMAILADDRESS_EMAILADDRESS_2 =
+		"employee.emailAddress = ?";
+
+	private static final String _FINDER_COLUMN_EMAILADDRESS_EMAILADDRESS_3 =
+		"(employee.emailAddress IS NULL OR employee.emailAddress = '')";
+
 	public EmployeePersistenceImpl() {
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
@@ -2070,6 +2608,24 @@ public class EmployeePersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
 			new String[] {"uuid_", "companyId"}, false);
+
+		_finderPathWithPaginationFindByEmailAddress = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByEmailAddress",
+			new String[] {
+				String.class.getName(), Integer.class.getName(),
+				Integer.class.getName(), OrderByComparator.class.getName()
+			},
+			new String[] {"emailAddress"}, true);
+
+		_finderPathWithoutPaginationFindByEmailAddress = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByEmailAddress",
+			new String[] {String.class.getName()},
+			new String[] {"emailAddress"}, true);
+
+		_finderPathCountByEmailAddress = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByEmailAddress",
+			new String[] {String.class.getName()},
+			new String[] {"emailAddress"}, false);
 
 		_setEmployeeUtilPersistence(this);
 	}

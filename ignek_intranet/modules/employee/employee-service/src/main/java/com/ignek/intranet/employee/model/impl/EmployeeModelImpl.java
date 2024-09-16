@@ -23,7 +23,6 @@ import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.User;
@@ -63,7 +62,6 @@ import java.util.function.Function;
  * @see EmployeeImpl
  * @generated
  */
-@JSON(strict = true)
 public class EmployeeModelImpl
 	extends BaseModelImpl<Employee> implements EmployeeModel {
 
@@ -136,20 +134,26 @@ public class EmployeeModelImpl
 	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
 	 */
 	@Deprecated
-	public static final long GROUPID_COLUMN_BITMASK = 2L;
+	public static final long EMAILADDRESS_COLUMN_BITMASK = 2L;
 
 	/**
 	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
 	 */
 	@Deprecated
-	public static final long UUID_COLUMN_BITMASK = 4L;
+	public static final long GROUPID_COLUMN_BITMASK = 4L;
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
+	 */
+	@Deprecated
+	public static final long UUID_COLUMN_BITMASK = 8L;
 
 	/**
 	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
 	 *		#getColumnBitmask(String)}
 	 */
 	@Deprecated
-	public static final long EMPID_COLUMN_BITMASK = 8L;
+	public static final long EMPID_COLUMN_BITMASK = 16L;
 
 	/**
 	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
@@ -352,7 +356,6 @@ public class EmployeeModelImpl
 			(Map)attributeSetterBiConsumers);
 	}
 
-	@JSON
 	@Override
 	public String getUuid() {
 		if (_uuid == null) {
@@ -381,7 +384,6 @@ public class EmployeeModelImpl
 		return getColumnOriginalValue("uuid_");
 	}
 
-	@JSON
 	@Override
 	public long getEmpId() {
 		return _empId;
@@ -396,7 +398,6 @@ public class EmployeeModelImpl
 		_empId = empId;
 	}
 
-	@JSON
 	@Override
 	public long getGroupId() {
 		return _groupId;
@@ -420,7 +421,6 @@ public class EmployeeModelImpl
 		return GetterUtil.getLong(this.<Long>getColumnOriginalValue("groupId"));
 	}
 
-	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -445,7 +445,6 @@ public class EmployeeModelImpl
 			this.<Long>getColumnOriginalValue("companyId"));
 	}
 
-	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -476,7 +475,6 @@ public class EmployeeModelImpl
 	public void setUserUuid(String userUuid) {
 	}
 
-	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -496,7 +494,6 @@ public class EmployeeModelImpl
 		_userName = userName;
 	}
 
-	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -511,7 +508,6 @@ public class EmployeeModelImpl
 		_createDate = createDate;
 	}
 
-	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -532,7 +528,6 @@ public class EmployeeModelImpl
 		_modifiedDate = modifiedDate;
 	}
 
-	@JSON
 	@Override
 	public String getFirstName() {
 		if (_firstName == null) {
@@ -552,7 +547,6 @@ public class EmployeeModelImpl
 		_firstName = firstName;
 	}
 
-	@JSON
 	@Override
 	public String getLastName() {
 		if (_lastName == null) {
@@ -572,7 +566,6 @@ public class EmployeeModelImpl
 		_lastName = lastName;
 	}
 
-	@JSON
 	@Override
 	public String getEmailAddress() {
 		if (_emailAddress == null) {
@@ -592,7 +585,15 @@ public class EmployeeModelImpl
 		_emailAddress = emailAddress;
 	}
 
-	@JSON
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getColumnOriginalValue(String)}
+	 */
+	@Deprecated
+	public String getOriginalEmailAddress() {
+		return getColumnOriginalValue("emailAddress");
+	}
+
 	@Override
 	public long getPhoneNumber() {
 		return _phoneNumber;
@@ -607,7 +608,6 @@ public class EmployeeModelImpl
 		_phoneNumber = phoneNumber;
 	}
 
-	@JSON
 	@Override
 	public String getAddressLine1() {
 		if (_addressLine1 == null) {
@@ -627,7 +627,6 @@ public class EmployeeModelImpl
 		_addressLine1 = addressLine1;
 	}
 
-	@JSON
 	@Override
 	public String getAddressLine2() {
 		if (_addressLine2 == null) {
@@ -647,7 +646,6 @@ public class EmployeeModelImpl
 		_addressLine2 = addressLine2;
 	}
 
-	@JSON
 	@Override
 	public String getCity() {
 		if (_city == null) {
@@ -667,7 +665,6 @@ public class EmployeeModelImpl
 		_city = city;
 	}
 
-	@JSON
 	@Override
 	public long getZipCode() {
 		return _zipCode;
@@ -682,7 +679,6 @@ public class EmployeeModelImpl
 		_zipCode = zipCode;
 	}
 
-	@JSON
 	@Override
 	public String getDesignation() {
 		if (_designation == null) {

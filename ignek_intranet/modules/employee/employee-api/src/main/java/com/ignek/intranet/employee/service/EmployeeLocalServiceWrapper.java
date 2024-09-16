@@ -53,20 +53,6 @@ public class EmployeeLocalServiceWrapper
 		return _employeeLocalService.addEmployee(employee);
 	}
 
-	@Override
-	public com.ignek.intranet.employee.model.Employee addEmployee(
-			long empId, long userId, long companyId, String firstName,
-			String lastName, String emailAddress, long phoneNumber,
-			String addressLine1, String addressLine2, String city, long zipCode,
-			String designation)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return _employeeLocalService.addEmployee(
-			empId, userId, companyId, firstName, lastName, emailAddress,
-			phoneNumber, addressLine1, addressLine2, city, zipCode,
-			designation);
-	}
-
 	/**
 	 * Creates a new employee with the primary key. Does not add the employee to the database.
 	 *
@@ -401,6 +387,20 @@ public class EmployeeLocalServiceWrapper
 		return _employeeLocalService.getPersistedModel(primaryKeyObj);
 	}
 
+	@Override
+	public com.ignek.intranet.employee.model.Employee saveEmployee(
+			long empId, long userId, long companyId, String firstName,
+			String lastName, String emailAddress, long phoneNumber,
+			String addressLine1, String addressLine2, String city, long zipCode,
+			String designation)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _employeeLocalService.saveEmployee(
+			empId, userId, companyId, firstName, lastName, emailAddress,
+			phoneNumber, addressLine1, addressLine2, city, zipCode,
+			designation);
+	}
+
 	/**
 	 * Updates the employee in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *
@@ -416,20 +416,6 @@ public class EmployeeLocalServiceWrapper
 		com.ignek.intranet.employee.model.Employee employee) {
 
 		return _employeeLocalService.updateEmployee(employee);
-	}
-
-	@Override
-	public com.ignek.intranet.employee.model.Employee updateEmployee(
-			long userUniqueId, long companyId, long empId, String firstName,
-			String lastName, String emailAddress, long phoneNumber,
-			String addressLine1, String addressLine2, String city, long zipCode,
-			String designation)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return _employeeLocalService.updateEmployee(
-			userUniqueId, companyId, empId, firstName, lastName, emailAddress,
-			phoneNumber, addressLine1, addressLine2, city, zipCode,
-			designation);
 	}
 
 	@Override

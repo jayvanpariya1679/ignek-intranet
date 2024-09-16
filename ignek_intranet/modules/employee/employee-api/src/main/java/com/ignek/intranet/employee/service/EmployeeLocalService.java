@@ -78,13 +78,6 @@ public interface EmployeeLocalService
 	@Indexable(type = IndexableType.REINDEX)
 	public Employee addEmployee(Employee employee);
 
-	public Employee addEmployee(
-			long empId, long userId, long companyId, String firstName,
-			String lastName, String emailAddress, long phoneNumber,
-			String addressLine1, String addressLine2, String city, long zipCode,
-			String designation)
-		throws PortalException;
-
 	/**
 	 * Creates a new employee with the primary key. Does not add the employee to the database.
 	 *
@@ -314,6 +307,13 @@ public interface EmployeeLocalService
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException;
 
+	public Employee saveEmployee(
+			long empId, long userId, long companyId, String firstName,
+			String lastName, String emailAddress, long phoneNumber,
+			String addressLine1, String addressLine2, String city, long zipCode,
+			String designation)
+		throws PortalException;
+
 	/**
 	 * Updates the employee in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *
@@ -326,12 +326,5 @@ public interface EmployeeLocalService
 	 */
 	@Indexable(type = IndexableType.REINDEX)
 	public Employee updateEmployee(Employee employee);
-
-	public Employee updateEmployee(
-			long userUniqueId, long companyId, long empId, String firstName,
-			String lastName, String emailAddress, long phoneNumber,
-			String addressLine1, String addressLine2, String city, long zipCode,
-			String designation)
-		throws PortalException;
 
 }

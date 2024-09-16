@@ -13,6 +13,14 @@ public class CommonUtil {
 		return serviceContext;
 	}
 
+	public static ServiceContext getServiceContext(long groupId, long companyId, long userId) {
+		ServiceContext serviceContext = new ServiceContext();
+		serviceContext.setScopeGroupId(groupId);
+		serviceContext.setCompanyId(companyId);
+		serviceContext.setUserId(userId);
+		return serviceContext;
+	}
+
 	public static SearchContext setSearchContextData(int start, int end) {
 		SearchContext searchContext = new SearchContext();
 		searchContext.setCompanyId(PortalUtil.getDefaultCompanyId());

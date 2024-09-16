@@ -14,16 +14,15 @@
 
 package com.ignek.intranet.employee.service.impl;
 
-import java.util.Date;
-
-import org.osgi.service.component.annotations.Component;
-
 import com.ignek.intranet.employee.model.Employee;
 import com.ignek.intranet.employee.service.base.EmployeeLocalServiceBaseImpl;
 import com.liferay.counter.kernel.service.CounterLocalServiceUtil;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.Validator;
+import org.osgi.service.component.annotations.Component;
+
+import java.util.Date;
 
 /**
  * @author Brian Wing Shun Chan
@@ -31,11 +30,13 @@ import com.liferay.portal.kernel.util.Validator;
 @Component(property = "model.class.name=com.ignek.intranet.employee.model.Employee", service = AopService.class)
 public class EmployeeLocalServiceImpl extends EmployeeLocalServiceBaseImpl {
 
-	public Employee addEmployee(long empId, long userId, long companyId, String firstName, String lastName,
+	public Employee saveEmployee(long empId, long userId, long companyId, String firstName, String lastName,
 			String emailAddress, long phoneNumber, String addressLine1, String addressLine2, String city, long zipCode,
-			String designation) throws PortalException {
-		Employee employee = null;
-		if (Validator.isNull(empId)) {
+			String designation) throws PortalException{
+
+		Employee employee = Validator.isNull(empId) ? null : employeeLocalService.getEmployee(empId);
+
+		if (Validator.isNull(employee)) {
 			empId = CounterLocalServiceUtil.increment();
 			employee = employeePersistence.create(empId);
 			employee.setEmpId(empId);
@@ -53,22 +54,6 @@ public class EmployeeLocalServiceImpl extends EmployeeLocalServiceBaseImpl {
 		employee.setZipCode(zipCode);
 		employee.setDesignation(designation);
 
-		return employeeLocalService.updateEmployee(employee);
-	}
-
-	public Employee updateEmployee(long userUniqueId, long companyId, long empId, String firstName, String lastName,
-			String emailAddress, long phoneNumber, String addressLine1, String addressLine2, String city, long zipCode,
-			String designation) throws PortalException {
-		Employee employee = employeeLocalService.getEmployee(empId);
-		employee.setFirstName(firstName);
-		employee.setLastName(lastName);
-		employee.setEmailAddress(emailAddress);
-		employee.setPhoneNumber(phoneNumber);
-		employee.setAddressLine1(addressLine1);
-		employee.setAddressLine2(addressLine2);
-		employee.setCity(city);
-		employee.setZipCode(zipCode);
-		employee.setDesignation(designation);
 		return employeeLocalService.updateEmployee(employee);
 	}
 

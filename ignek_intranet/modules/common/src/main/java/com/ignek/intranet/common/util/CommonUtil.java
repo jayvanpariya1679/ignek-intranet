@@ -1,0 +1,32 @@
+package com.ignek.intranet.common.util;
+
+import com.liferay.portal.kernel.search.SearchContext;
+import com.liferay.portal.kernel.service.ServiceContext;
+import com.liferay.portal.kernel.util.PortalUtil;
+
+public class CommonUtil {
+
+	public static ServiceContext getServiceContext(long companyId, long userId) {
+		ServiceContext serviceContext = new ServiceContext();
+		serviceContext.setCompanyId(companyId);
+		serviceContext.setUserId(userId);
+		return serviceContext;
+	}
+
+	public static ServiceContext getServiceContext(long groupId, long companyId, long userId) {
+		ServiceContext serviceContext = new ServiceContext();
+		serviceContext.setScopeGroupId(groupId);
+		serviceContext.setCompanyId(companyId);
+		serviceContext.setUserId(userId);
+		return serviceContext;
+	}
+
+	public static SearchContext setSearchContextData(int start, int end) {
+		SearchContext searchContext = new SearchContext();
+		searchContext.setCompanyId(PortalUtil.getDefaultCompanyId());
+		searchContext.setStart(start);
+		searchContext.setEnd(end);
+		return searchContext;
+	}
+
+}

@@ -1,0 +1,4 @@
+Bundle-Name: Employee Rest Impl
+Bundle-SymbolicName: com.ignek.intranet.employeerest.impl
+Bundle-Version: 1.0.0
+-privatepackage: com.ignek.intranet.employeerest.*

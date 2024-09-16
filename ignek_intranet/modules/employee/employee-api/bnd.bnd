@@ -1,0 +1,10 @@
+Bundle-Name: Employee API
+Bundle-SymbolicName: com.ignek.intranet.employee.api
+Bundle-Version: 1.0.0
+Export-Package:\
+	com.ignek.intranet.employee.exception,\
+	com.ignek.intranet.employee.model,\
+	com.ignek.intranet.employee.service,\
+	com.ignek.intranet.employee.service.persistence
+-check: EXPORTS
+-includeresource: META-INF/service.xml=../employee-service/service.xml

@@ -1,0 +1,4 @@
+Bundle-Name: intranet-entities-counts
+Bundle-SymbolicName: com.ignek.intranet.counts
+Bundle-Version: 1.0.0
+Export-Package: com.ignek.intranet.counts.constants

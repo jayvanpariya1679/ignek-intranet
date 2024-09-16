@@ -1,0 +1,7 @@
+Bundle-Name: Employee Web
+Bundle-SymbolicName: com.ignek.portal.employee.web
+Bundle-Version: 1.0.0
+Export-Package: \
+	com.ignek.intranet.constants,\
+	junit.framework,\
+	junit.textui
